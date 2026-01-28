@@ -1,0 +1,2 @@
+# MaxProtect
+Plugin protections
