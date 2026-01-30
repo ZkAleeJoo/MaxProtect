@@ -14,16 +14,14 @@ public class MaxProtect extends JavaPlugin {
     public void onEnable() {
         instance = this;
         
-        // 1. Cargar Configuración
         mainConfigManager = new MainConfigManager(this);
 
-        // 2. Registrar Comandos (Pendiente)
-        // registerCommands();
+        //Pendiente
+        //registerCommands();
 
-        // 3. Registrar Eventos (Pendiente)
-        // registerEvents();
+        //Pendiente
+        //registerEvents();
 
-        // Mensaje de inicio profesional
         Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
             mainConfigManager.getPrefix() + "&aPlugin habilitado correctamente (v" + getDescription().getVersion() + ")"
         ));
