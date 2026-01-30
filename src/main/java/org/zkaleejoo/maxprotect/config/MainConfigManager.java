@@ -47,7 +47,6 @@ public class MainConfigManager {
         loadVariables();
     }
 
-    // Getters
     public String getPrefix() { return prefix; }
     public String getNoPermission() { return noPermission; }
     public String getProtectionCreated() { return protectionCreated; }
