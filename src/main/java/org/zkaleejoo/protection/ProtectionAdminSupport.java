@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public final class ProtectionAdminSupport {
 
-    private static final String REGION_PREFIX = "mp_";
+    private static final String REGION_PREFIX = "ap_";
 
     private ProtectionAdminSupport() {
     }
