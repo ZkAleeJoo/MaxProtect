@@ -1,0 +1,71 @@
+name: MaxProtections
+version: ${project.version}
+main: org.zkaleejoo.MaxProtections
+api-version: '1.21'
+folia-supported: true
+authors: [ ZkAleeJoo ]
+description: Modern protection plugin
+depend: [WorldGuard]
+softdepend: [Vault, ProtectionStones]
+
+commands:
+  maxprotections:
+    description: Main MaxProtections command
+    aliases: [mp]
+  protection:
+    description: Protection stone command
+    aliases: [p]
+
+permissions:
+  maxprotections.admin:
+    description: Full access to MaxProtections and administrative commands.
+    default: op
+    children:
+      maxprotections.admin.debug: true
+      maxprotections.admin.listplaced: true
+      maxprotections.admin.repair: true
+      maxprotections.admin.report: true
+      maxprotections.admin.logs: true
+      maxprotections.admin.migrate: true
+      maxprotections.protection: true
+      maxprotections.protection.give: true
+      maxprotections.protection.buy: true
+      maxprotections.protection.fly: true
+      maxprotections.protection.remove.others: true
+      maxprotections.flags: true
+  maxprotections.admin.debug:
+    description: Allows inspecting placed protection tracking and WorldGuard data.
+    default: op
+  maxprotections.admin.listplaced:
+    description: Allows opening the admin placed protections menu.
+    default: op
+  maxprotections.admin.repair:
+    description: Allows repairing and safely cleaning placed protection tracking.
+    default: op
+  maxprotections.admin.report:
+    description: Allows viewing protection database reports.
+    default: op
+  maxprotections.admin.logs:
+    description: Allows viewing recent event logs for any placed protection.
+    default: op
+  maxprotections.admin.migrate:
+    description: Allows previewing and applying supported protection plugin migrations.
+    default: op
+  maxprotections.protection:
+    description: Allows using player protection commands such as paying rent.
+    default: true
+  maxprotections.protection.give:
+    description: Allows giving protection stones to players.
+    default: op
+  maxprotections.protection.buy:
+    description: Allows buying protection stones.
+    default: true
+  maxprotections.protection.fly:
+    description: Allows toggling flight inside accessible protections.
+    default: op
+  maxprotections.protection.remove.others:
+    description: Allows removing protection stones owned by other players.
+    default: op
+  maxprotections.flags:
+    description: Allows owners to modify protection flags from the settings menu.
+    default: true

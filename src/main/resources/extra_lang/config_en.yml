@@ -1,0 +1,1043 @@
+#   _____                __________                __                 __  .__                      
+#  /     \ _____  ___  __\______   \_______  _____/  |_  ____   _____/  |_|__| ____   ____   ______
+# /  \ /  \\__  \ \  \/  /|     ___/\_  __ \/  _ \   __\/ __ \_/ ___\   __\  |/  _ \ /    \ /  ___/
+#/    Y    \/ __ \_>    < |    |     |  | \(  <_> )  | \  ___/\  \___|  | |  (  <_> )   |  \\___ \ 
+#\____|__  (____  /__/\_ \|____|     |__|   \____/|__|  \___  >\___  >__| |__|\____/|___|  /____  >
+#        \/     \/      \/                                  \/     \/                    \/     \/ 
+# 
+# This entire section will be in English. Every item in this file is configurable. 
+# If you find something that cannot be configured, please report it via our Discord server: https://discord.gg/Vr46JHm2kd
+
+general:
+  language: "en"
+  prefix: "&#27F554&lMaxProtections &8» "
+  update-check: true
+  bstats: true
+
+protection:
+  home-cooldown-seconds: 5
+  rent:
+    enabled: false
+    period-hours: 168
+    check-interval-minutes: 10
+  default-actionbar:
+    enter: "&aEntering &f%owner%&a's protection."
+    exit: "&cLeaving &f%owner%&c's protection."
+  preview:
+    cinematic:
+      enabled: false
+      duration-seconds: 5
+      cooldown-seconds: 5
+      height-offset: 18.0
+      border-material: "RED_STAINED_GLASS"
+      use-fake-blocks: true
+  visual-effects:
+    place:
+      enabled: true
+      particle: "DUST"
+      count: 24
+      offset-x: 0.45
+      offset-y: 0.55
+      offset-z: 0.45
+      speed: 0.02
+      dust-size: 1.2
+      color:
+        red: 124
+        green: 255
+        blue: 107
+    remove:
+      enabled: true
+      particle: "DUST"
+      count: 28
+      offset-x: 0.55
+      offset-y: 0.65
+      offset-z: 0.55
+      speed: 0.03
+      dust-size: 1.35
+      color:
+        red: 255
+        green: 77
+        blue: 77
+    view:
+      enabled: true
+      particle: "DUST"
+      count: 1
+      duration-seconds: 5
+      interval-ticks: 10
+      cooldown-seconds: 10
+      dust-size: 1.2
+      color:
+        red: 39
+        green: 245
+        blue: 97
+  sounds:
+    buy:
+      enabled: true
+      sound: "ENTITY_EXPERIENCE_ORB_PICKUP"
+      volume: 0.8
+      pitch: 1.2
+    place:
+      enabled: true
+      sound: "ENTITY_PLAYER_LEVELUP"
+      volume: 0.8
+      pitch: 1.0
+    remove:
+      enabled: true
+      sound: "ENTITY_EXPERIENCE_ORB_PICKUP"
+      volume: 0.8
+      pitch: 0.8
+    error:
+      enabled: true
+      sound: "ENTITY_VILLAGER_NO"
+      volume: 0.8
+      pitch: 1.2
+    flag-change:
+      enabled: true
+      sound: "UI_BUTTON_CLICK"
+      volume: 0.8
+      pitch: 1.4
+
+limits:
+  default:
+    max-protections: 3
+    max-radius: 25
+    min-price: 0
+    max-price: 100000
+  # Add as many groups as you want. The player will use the matching group with the highest priority.
+  groups:
+    vip:
+      permission: "maxprotections.limits.vip"
+      priority: 10
+      max-protections: 10
+      max-radius: 50
+      min-price: 0
+      max-price: 250000
+    mvp:
+      permission: "maxprotections.limits.mvp"
+      priority: 20
+      max-protections: 20
+      max-radius: 75
+      min-price: 0
+      max-price: 500000
+
+#==========================================
+#       Configuration Menus
+#==========================================
+menus:
+  #--------------------------------
+  #      Info Menu 
+  #--------------------------------
+  info:
+    title: "&#FFE259&l✦ &8Info of &f%alias% &#FFE259&l✦"
+    size: 45
+    filler:
+      material: "BLACK_STAINED_GLASS_PANE"
+      name: " "
+    items:
+      top-glow:
+        slots: [0, 1, 7, 8, 36, 37, 43, 44]
+        material: "LIME_STAINED_GLASS_PANE"
+        decorative: true
+        name: "&#27F561&l✦"
+      name:
+        slot: 13
+        material: "NAME_TAG"
+        name: "&#4DCBFF&lProtection Name"
+        lore:
+          - "&8Visual identification"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&fAlias: &#4DCBFF%alias%"
+          - "&fZone ID: &7%protection%"
+      size:
+        slot: 20
+        material: "GRASS_BLOCK"
+        name: "&#27F561&lArea Size"
+        lore:
+          - "&8Dimensions"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&fTotal area: &#27F561%size%"
+          - "&fCoverage radius: &#27F561%radius% blocks"
+      created:
+        slot: 21
+        material: "CLOCK"
+        name: "&#FFE259&lCreation Date"
+        lore:
+          - "&8History"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&fFounded on:"
+          - "&#FFE259%created_at%"
+      owners:
+        slot: 22
+        material: "PLAYER_HEAD"
+        name: "&#FF5555&lMain Owners"
+        lore:
+          - "&8Administration"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&fNumber of owners: &#FF5555%owners%"
+          - "&fOriginal owner: &#FF5555%owner%"
+      members:
+        slot: 23
+        material: "PLAYER_HEAD"
+        name: "&#7DE7FF&lZone Members"
+        lore:
+          - "&8Access"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&fPlayers with access: &#7DE7FF%members%"
+      location:
+        slot: 24
+        material: "COMPASS"
+        name: "&#C66BFF&lGeographical Location"
+        lore:
+          - "&8Coordinates"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&fWorld: &#C66BFF%world%"
+          - "&fStone: &#C66BFF%stone_x%, %stone_y%, %stone_z%"
+      home:
+        slot: 31
+        material: "RED_BED"
+        name: "&#FF7A3D&lHome Point"
+        lore:
+          - "&8Teleportation"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&fHome coordinates:"
+          - "&#FF7A3D%home_x%, %home_y%, %home_z%"
+
+  #--------------------------------
+  #      Creation Menu 
+  #--------------------------------
+  creation:
+    title: "&8Warding Stone Creator"
+    size: 36
+    filler:
+      material: "BLACK_STAINED_GLASS_PANE"
+      name: "&8▪"
+    current-value-line: "&#FFE259&l◆ &7Current value: &f%value%"
+    items:
+      header:
+        slot: 4
+        material: "PLAYER_HEAD"
+        texture: "http://textures.minecraft.net/texture/c226e706a17477129cb6bfcb275f82d34e89e73e2ac0fc1094a28bc7fd675cb3"
+        decorative: true
+        name: "&#FFE259&l✦ Warding Stone Setup"
+        lore:
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&#FFF3B0Complete every field below"
+          - "&#FFF3B0to create a new protection."
+          - ""
+          - "&#FFA751&l➥ &7Status panels update instantly."
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+      status-protection-id:
+        slot: 20
+        material: "RED_STAINED_GLASS_PANE"
+        empty-material: "RED_STAINED_GLASS_PANE"
+        filled-material: "LIME_STAINED_GLASS_PANE"
+        decorative: true
+        status-for: "protection-id"
+        name: "&#FF4D4D&l✖ &8| &fStone ID"
+      status-display-name:
+        slot: 21
+        material: "RED_STAINED_GLASS_PANE"
+        empty-material: "RED_STAINED_GLASS_PANE"
+        filled-material: "LIME_STAINED_GLASS_PANE"
+        decorative: true
+        status-for: "display-name"
+        name: "&#FF4D4D&l✖ &8| &fDisplay Name"
+      status-block-type:
+        slot: 22
+        material: "RED_STAINED_GLASS_PANE"
+        empty-material: "RED_STAINED_GLASS_PANE"
+        filled-material: "LIME_STAINED_GLASS_PANE"
+        decorative: true
+        status-for: "block-type"
+        name: "&#FF4D4D&l✖ &8| &fBlock Type"
+      status-radius:
+        slot: 23
+        material: "RED_STAINED_GLASS_PANE"
+        empty-material: "RED_STAINED_GLASS_PANE"
+        filled-material: "LIME_STAINED_GLASS_PANE"
+        decorative: true
+        status-for: "radius"
+        name: "&#FF4D4D&l✖ &8| &fProtection Radius"
+      status-price:
+        slot: 24
+        material: "RED_STAINED_GLASS_PANE"
+        empty-material: "RED_STAINED_GLASS_PANE"
+        filled-material: "LIME_STAINED_GLASS_PANE"
+        decorative: true
+        status-for: "price"
+        name: "&#FF4D4D&l✖ &8| &fVault Price"
+      protection-id:
+        slot: 11
+        material: "PLAYER_HEAD"
+        texture: "http://textures.minecraft.net/texture/218d46ec4db169a67306cf29d4a396a6c5d2cc4b25488799f1491891b8b1877e"
+        name: "&#FFE259&l01 &8┃ &fStone ID"
+        lore:
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&#FFE259&lIdentifier"
+          - "&7Unique YAML name used by"
+          - "&7the protection system."
+          - ""
+          - "&8Example: &#FFFFFFspawn_guard"
+          - ""
+          - "&#FFA751&l➥ &eClick to edit"
+      display-name:
+        slot: 12
+        material: "PLAYER_HEAD"
+        texture: "http://textures.minecraft.net/texture/e825419e429afc040c9e68b10523b917d7b8087d63e7648b10807da8b768ee"
+        name: "&#FFE259&l02 &8┃ &fDisplay Name"
+        lore:
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&#FFE259&lVisual Name"
+          - "&7Name shown to players when"
+          - "&7they receive or view this stone."
+          - ""
+          - "&8Supports: &#FFFFFFlegacy &8and &#FFE259hex colors"
+          - ""
+          - "&#FFA751&l➥ &eClick to edit"
+      block-type:
+        slot: 13
+        material: "PLAYER_HEAD"
+        texture: "http://textures.minecraft.net/texture/3687a2bcaf83ea8a3174d03d3900991b67e65c8ca1cc4d95a0b2cb717967a627"
+        name: "&#FFE259&l03 &8┃ &fBlock Type"
+        lore:
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&#FFE259&lProtection Block"
+          - "&7Uses the block currently"
+          - "&7held in your hand."
+          - ""
+          - "&8Also keeps custom head skins."
+          - ""
+          - "&#FFA751&l➥ &eHold a block and click"
+      radius:
+        slot: 14
+        material: "PLAYER_HEAD"
+        texture: "http://textures.minecraft.net/texture/3eb260720c8c022526376c47c30018a49b3d7d581c524a5c8eb01a124d0c2acd"
+        name: "&#FFE259&l04 &8┃ &fProtection Radius"
+        lore:
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&#FFE259&lClaim Size"
+          - "&7Defines the protected range"
+          - "&7in blocks around the stone."
+          - ""
+          - "&8Example: &#FFFFFF10"
+          - ""
+          - "&#FFA751&l➥ &eClick to edit"
+      price:
+        slot: 15
+        material: "PLAYER_HEAD"
+        texture: "http://textures.minecraft.net/texture/67f8d8c39f9921a64d7b755de322e441fded4b775a7657e0b3196b6fda863646"
+        name: "&#FFE259&l05 &8┃ &fVault Price"
+        lore:
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&#FFE259&lEconomy Cost"
+          - "&7Price required to obtain"
+          - "&7this protection stone."
+          - ""
+          - "&8Use &#FFFFFF0 &8to make it free."
+          - ""
+          - "&#FFA751&l➥ &eClick to edit"
+      confirm:
+        slot: 31
+        material: "PLAYER_HEAD"
+        texture: "http://textures.minecraft.net/texture/70d969cd8c8b2916b26a197253e3adfe9853720494f22be19a083bf184f9c2bc"
+        name: "&#6DFF8F&l✔ CONFIRM AND CREATE"
+        lore:
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7Generate the YAML file"
+          - "&7for this new protection stone."
+          - ""
+          - "&#6DFF8F&l➥ &aClick to finish"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+  #--------------------------------
+  #      Protection Menu
+  #--------------------------------
+  protection:
+    title: "&#FFE259&l» &8Protection Menu &#FFA751&l«"
+    size: 27
+    filler:
+      material: "BLACK_STAINED_GLASS_PANE"
+      name: "&8▪"
+    items:
+      settings:
+        slot: 10
+        material: "REDSTONE"
+        name: "&#FFE259&l⚙ SETTINGS"
+        lore:
+          - "&8Protection settings"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7Manage the main rules of"
+          - "&7your protected area."
+          - ""
+          - "&#FFF3B0Includes building, PvP,"
+          - "&#FFF3B0storage and access options."
+          - ""
+          - "&#FFA751&l➥ &eClick to open settings"
+      information:
+        slot: 13
+        material: "BOOK"
+        name: "&#4DCBFF&lⓘ INFORMATION"
+        lore:
+          - "&8Protection details"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&#FFE259☮ &fName: &#FFE259%protection%"
+          - "&#6DFF8F⌁ &fSize: &#6DFF8F%size%"
+          - ""
+          - "&#FF5C5C♛ &fOwners: &#FF5C5C%owners%"
+          - "&#4DCBFF♟ &fMembers: &#4DCBFF%members%"
+          - ""
+          - "&#D873FF◆ &fLocation: &#D873FF%x%, %y%, %z%"
+          - "&#00E5FF◺ &fBorders: &#00E5FF(%min_x%, %min_z%) → (%max_x%, %max_z%)"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+      members:
+        slot: 16
+        material: "PLAYER_HEAD"
+        name: "&#6DFF8F&l♣ MEMBERS"
+        lore:
+          - "&8Member management"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7Manage the members of your"
+          - "&7protection and access."
+          - ""
+          - "&#FFF3B0Add users and manage access"
+          - "&#FFF3B0and manage permissions."
+          - ""
+          - "&#6DFF8F&l➥ &aClick to manage members"
+      remove:
+        slot: 22
+        material: "BARRIER"
+        name: "&#FF4D4D&lREMOVE"
+        lore:
+          - "&8Danger zone"
+          - "&8&m----------------------"
+          - "&7Opens a confirmation menu"
+          - "&7before deleting this region."
+          - ""
+          - "&#FF4D4D&l> &cClick to confirm removal"
+  #--------------------------------
+  #      Protection Homes Menu
+  #--------------------------------
+  protection-home:
+    title: "&#27F561&l✦ &8Your Protection Homes &#FFE259&l✦"
+    size: 45
+    content-slots: [10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25]
+    filler:
+      material: "BLACK_STAINED_GLASS_PANE"
+      name: " "
+    items:
+      top-glow:
+        slots: [0, 1, 7, 8, 36, 37, 43, 44]
+        material: "LIME_STAINED_GLASS_PANE"
+        decorative: true
+        name: "&#27F561&l✦"
+      side-glow:
+        slots: [9, 17, 18, 26, 27, 35]
+        material: "CYAN_STAINED_GLASS_PANE"
+        decorative: true
+        name: "&#4DCBFF&l✦"
+      information:
+        slot: 4
+        material: "ENDER_PEARL"
+        decorative: true
+        name: "&#4DCBFF&lHOME SELECTOR"
+        lore:
+          - "&8Fast travel"
+          - ""
+          - "&#27F561+ &fPick any accessible protection"
+          - "&#FFE259+ &fYour block icon is preserved"
+          - "&#C66BFF+ &fOwner and member access shows here"
+      back:
+        slot: 40
+        material: "ARROW"
+        name: "&#FF7A3D&lBACK TO MENU"
+        lore:
+          - "&8Navigation"
+          - ""
+          - "&fReturn to the main protection menu."
+          - ""
+          - "&#FFE259<- &eClick to go back"
+    role-labels:
+      owner: "&#FF5555Main Owner"
+      admin: "&#C66BFFStaff Access"
+      member: "&#7DE7FFMember"
+    item:
+      name: "&#27F561&l⌂ &f%alias% &8(&7%protection_id%&8)"
+      lore:
+        - "&8Protection home"
+        - ""
+        - "&#FFB347✦ &fAccess: %role%"
+        - "&#27F561⬢ &fSize: &#27F561%size%"
+        - "&#4DCBFF⌖ &fWorld: &#4DCBFF%world%"
+        - "&#C66BFF⌁ &fStone: &#C66BFF%stone_x%, %stone_y%, %stone_z%"
+        - ""
+        - "&#FFE259&l➥ &eClick to teleport"
+    navigation:
+      previous:
+        slot: 36
+        material: "ARROW"
+        name: "&#27F561&lPrevious page"
+        lore:
+          - "&7Go back to page &f%page%"
+      next:
+        slot: 44
+        material: "ARROW"
+        name: "&#27F561&lNext page"
+        lore:
+          - "&7Go to page &f%page%"
+  #--------------------------------
+  #      Protection Members Menu
+  #--------------------------------
+  protection-members:
+    title: "&#27F561&l✦ &8Protection Members &#FFE259&l✦"
+    size: 45
+    content-slots: [10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25]
+    filler:
+      material: "BLACK_STAINED_GLASS_PANE"
+      name: " "
+    items:
+      top-glow:
+        slots: [0, 1, 7, 8, 36, 37, 43, 44]
+        material: "LIME_STAINED_GLASS_PANE"
+        decorative: true
+        name: "&#27F561&l✦"
+      side-glow:
+        slots: [9, 17, 18, 26, 27, 35]
+        material: "CYAN_STAINED_GLASS_PANE"
+        decorative: true
+        name: "&#4DCBFF&l✧"
+      gold-accent:
+        slots: [3, 5, 39, 41]
+        material: "YELLOW_STAINED_GLASS_PANE"
+        decorative: true
+        name: "&#FFE259&l◆"
+      information:
+        slot: 4
+        material: "BOOK"
+        decorative: true
+        name: "&#4DCBFF&lⓘ MEMBER MANAGEMENT"
+        lore:
+          - "&8Member management"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&#27F561✦ &fControl who can enter"
+          - "&#4DCBFF✧ &fand each player's rank."
+          - ""
+          - "&#6DFF8F➕ &fTo add members:"
+          - "&#FFE259① &7Stand inside the region"
+          - "&#FFE259② &7Use: &#FFF3B0/p member add <player>"
+      back:
+        slot: 40
+        material: "ARROW"
+        name: "&#FF7A3D&l⏎ BACK TO MENU"
+        lore:
+          - "&8Navigation"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&#FFE259⌂ &fReturn to this protection's"
+          - "&fmain menu."
+          - ""
+          - "&#FFE259&l➥ &eClick to go back"
+    role-labels:
+      owner: "&#FF5555♛ Main Owner"
+      admin: "&#C66BFF✦ Admin / Veteran"
+      member: "&#7DE7FF♟ Member"
+    unknown-date: "Unknown"
+    item:
+      material: "PLAYER_HEAD"
+      name: "&#FFE259&l✦ &#FFF45C&l%member% &#FFE259&l✦"
+      lore:
+        - "&8Protection member"
+        - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+        - "&#FFB347♛ &fAccess: %role%"
+        - "&#7DE7FF⌚ &fSince: &#FFFFFF%created_date%"
+        - ""
+        - "&#27F561▲ &fLeft click: &#FFE259promote"
+        - "&#FFB347▼ &fRight click: &#FFE259demote"
+        - "&#FF5C5C✖ &fShift right click: &#FFE259remove"
+        - ""
+        - "&8Owners cannot be managed here."
+    navigation:
+      previous:
+        slot: 36
+        material: "ARROW"
+        name: "&#27F561&lPrevious page"
+        lore:
+          - "&7Go back to page &f%page%"
+      next:
+        slot: 44
+        material: "ARROW"
+        name: "&#27F561&lNext page"
+        lore:
+          - "&7Go to page &f%page%"
+  #--------------------------------
+  #      Protection Logs Menu
+  #--------------------------------
+  protection-logs:
+    title: "&#27F561&l? &8Protection Logs &#FFE259&l?"
+    size: 45
+    content-slots: [10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25]
+    filler:
+      material: "BLACK_STAINED_GLASS_PANE"
+      name: " "
+    default-log-texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjlmNGQxNjkyMTU5OWRmZjg4YmFjMWFmNzA3NjU5ZmJmYzIzMzFhNDA2YzdjZTlkZWJiZDk4Mjg4ZTVhMjhhYyJ9fX0="
+    log-textures:
+      INVITE_ACCEPTED: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTFiNDJjNWY4OTMyMDk4MTY3YjFlNDEzMjZjNzVhODU1ZmExMDdjZDExODc5YWIyZTgzYzlmYTJkYzNhZDlmYiJ9fX0="
+      MEMBER_REMOVED: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjY0ZDNjYTEyMDZlOTIxYzY2YTJjZWY3NGI4NTQxNzA1NDFlNGVlOWFiZThmYTY3OGNmYWY5NjQ5NjRhMTZhMiJ9fX0="
+      INTRUSION_ALERT: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmYzNGU0NzhkMDgxOGVmOTJiMGU5YTVkOGNjOGQzNTk2ZTMyYTFlZDZlYTU1NDU5ZDY3ZWFkMWZkNzBiZjJjOCJ9fX0="
+      OWNER_TRANSFERRED: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWYxMjgzMTFmOTBiOGJiYWJmY2Q3NGFmYzI3YWU4ZTBiNGVkY2I0YTJiNDkwODljOGRmMGU4MTg5OTcwM2ZmOSJ9fX0="
+      INVITE_CREATED: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTQ2MjBlNTgzZTA3YzQwMDk2Yjc0NmJmMGFmYTM2M2FjYjQ2YmZmNmI4NmQ2ZDhmZmY3NThhN2FlZjQyZmQ2ZiJ9fX0="
+      INVITE_DENIED: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGNlYzFlYjYwNTg2NDk2YjNiNzg1NDUwM2I0ZjM2MDcxNjZmOTU2ODUyYjA2MGUyY2RlYzk2NzliODE1ZWJmYiJ9fX0="
+    log-item:
+      name: "&#FFF45C&l%type%"
+      lore:
+        - "&8%date%"
+        - ""
+        - "&#FFB347Actor: &f%actor%"
+        - "&#7DE7FFTarget: &f%target%"
+        - "&#6DFF8FDetail: &f%detail%"
+    items:
+      back:
+        slot: 40
+        material: "DARK_OAK_DOOR"
+        name: "&#FF7A3D&l? BACK TO MENU"
+        lore:
+          - "&8Navigation"
+          - "&8&m----------------------"
+          - "&#FFE259  &fReturn to this protection's"
+          - "&fmain menu."
+          - ""
+          - "&#FFE259&l? &eClick to go back"
+    navigation:
+      previous:
+        slot: 45
+        material: "ARROW"
+        name: "&#27F561&lPrevious page"
+        lore:
+          - "&7Go back to page &f%page%"
+      next:
+        slot: 53
+        material: "ARROW"
+        name: "&#27F561&lNext page"
+        lore:
+          - "&7Go to page &f%page%"
+  #--------------------------------
+  #      Admin Placed Protections Menu
+  #--------------------------------
+  admin-placed:
+    title: "&#FFE259&l>> &8Placed Protections &#FFE259&l<<"
+    size: 54
+    content-slots: [10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34]
+    filler:
+      material: "BLACK_STAINED_GLASS_PANE"
+      name: " "
+    status-labels:
+      ok: "&#55FF55OK"
+      missing: "&#FF5555Missing"
+    items:
+      information:
+        slot: 4
+        material: "COMPASS"
+        decorative: true
+        name: "&#FFE259&lPLACED PROTECTIONS"
+        lore:
+          - "&8Admin tracker"
+          - ""
+          - "&#6DFF8FTracked regions: &f%total%"
+          - "&#4DCBFFPage: &f%page%&7/&f%max_page%"
+          - ""
+          - "&#FFA751&l> &eClick a protection for debug details"
+    item:
+      use-protection-block: true
+      healthy-material: "LIME_CONCRETE"
+      broken-material: "RED_CONCRETE"
+      name: "&#FFF45C&l%alias%"
+      lore:
+        - "&8%region%"
+        - ""
+        - "&#FFB347Owner: &f%owner%"
+        - "&#7DE7FFProtection: &f%protection_id%"
+        - "&#C66BFFWorld: &f%world%"
+        - "&#6DFF8FStone: &f%stone_x%, %stone_y%, %stone_z%"
+        - ""
+        - "&7WorldGuard: %state_worldguard%"
+        - "&7YAML: %state_yaml%"
+        - "&7Stone block: %state_stone%"
+        - ""
+        - "&#FFA751&l> &eClick to print debug details"
+    navigation:
+      previous:
+        slot: 45
+        material: "ARROW"
+        name: "&#27F561&lPrevious page"
+        lore:
+          - "&7Go back to page &f%page%"
+      next:
+        slot: 53
+        material: "ARROW"
+        name: "&#27F561&lNext page"
+        lore:
+          - "&7Go to page &f%page%"
+  #--------------------------------
+  #      Protection Remove Confirm Menu
+  #--------------------------------
+  protection-remove-confirm:
+    title: "&#FF4D4D&lConfirm Removal"
+    size: 27
+    filler:
+      material: "BLACK_STAINED_GLASS_PANE"
+      name: " "
+    items:
+      confirm:
+        slot: 11
+        material: "LIME_CONCRETE"
+        name: "&#55FF55&lCONFIRM"
+        lore:
+          - "&8Danger zone"
+          - ""
+          - "&fDelete region: &#FFF7B2%alias%"
+          - "&fReturn the protection item."
+          - ""
+          - "&#55FF55&l> &aClick to remove"
+      cancel:
+        slot: 15
+        material: "RED_CONCRETE"
+        name: "&#FF5555&lCANCEL"
+        lore:
+          - "&8Safety"
+          - ""
+          - "&fKeep this protection active."
+          - ""
+          - "&#FF5555&l> &cClick to cancel"
+  #==========================================
+  #       Protection Settings Menu
+  #==========================================
+  protection-settings:
+    title: "&#FFE259&l» &8Protection Settings &#FFA751&l«"
+    size: 45
+    filler:
+      material: "BLACK_STAINED_GLASS_PANE"
+      name: "&8▪"
+    previous-item:
+      slot: 36
+      material: "ARROW"
+      name: "&#FFE259&l« Previous Page"
+      lore:
+        - "&7Click to go to page %page%"
+    next-item:
+      slot: 44
+      material: "ARROW"
+      name: "&#FFE259&lNext Page »"
+      lore:
+        - "&7Click to go to page %page%"
+    status-labels:
+      access:
+        nobody: "&#FF5555Nobody"
+        members: "&#FFE259Members+"
+        everyone: "&#55FF55Everyone"
+      toggle:
+        disabled: "&#FF5555Disabled"
+        enabled: "&#55FF55Enabled"
+    items:
+      pvp:
+        slot: 10
+        page: 0
+        material: "DIAMOND_SWORD"
+        name: "&#FF5C5C&l⚔ PVP PLAYERS"
+        lore:
+          - "&8Combat settings"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7Allows PvP combat between"
+          - "&7players inside your protection."
+          - ""
+          - "&fCurrent status: %state%"
+          - ""
+          - "&#FFA751&l➥ &eClick to cycle level"
+      pvp-mobs:
+        slot: 11
+        page: 0
+        material: "SLIME_BLOCK"
+        name: "&#6DFF8F&l☠ PVP MOBS"
+        lore:
+          - "&8Creature combat settings"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7Allows combat between players"
+          - "&7and mobs inside your protection."
+          - ""
+          - "&fCurrent status: %state%"
+          - ""
+          - "&#FFA751&l➥ &eClick to cycle level"
+      entry:
+        slot: 12
+        page: 0
+        material: "IRON_BARS"
+        name: "&#B3B3B3&l⚑ ALLOW ENTRY"
+        lore:
+          - "&8Access settings"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7Controls who can enter your"
+          - "&7protected area."
+          - ""
+          - "&8Players without permission can"
+          - "&8be blocked at the border."
+          - ""
+          - "&fCurrent status: %state%"
+          - ""
+          - "&#FFA751&l➥ &eClick to cycle level"
+      pressure-plates:
+        slot: 15
+        page: 0
+        material: "LIGHT_WEIGHTED_PRESSURE_PLATE"
+        name: "&#FFE259&l◖ PRESSURE PLATES"
+        lore:
+          - "&8Activation settings"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7Controls who can activate"
+          - "&7pressure plates by stepping"
+          - "&7on them."
+          - ""
+          - "&fCurrent status: %state%"
+          - ""
+          - "&#FFA751&l➥ &eClick to cycle level"
+      doors:
+        slot: 16
+        page: 0
+        material: "OAK_DOOR"
+        name: "&#FFA751&l🚪 USE DOORS"
+        lore:
+          - "&8Access settings"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7Controls who can open and"
+          - "&7close doors, trapdoors and gates."
+          - ""
+          - "&fCurrent status: %state%"
+          - ""
+          - "&#FFA751&l➥ &eClick to cycle level"
+      buttons:
+        slot: 14
+        page: 0
+        material: "STONE_BUTTON"
+        name: "&#FF5C5C&l🔘 USE BUTTONS"
+        lore:
+          - "&8Redstone settings"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7Controls who can press buttons"
+          - "&7and use redstone levers."
+          - ""
+          - "&fCurrent status: %state%"
+          - ""
+          - "&#FFA751&l➥ &eClick to cycle level"
+      place-blocks:
+        slot: 19
+        page: 0
+        material: "GRASS_BLOCK"
+        name: "&#6DFF8F&l🧱 PLACE BLOCKS"
+        lore:
+          - "&8Building settings"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7Controls who can place blocks"
+          - "&7inside your protected area."
+          - ""
+          - "&8Applies to all block types."
+          - ""
+          - "&fCurrent status: %state%"
+          - ""
+          - "&#FFA751&l➥ &eClick to cycle level"
+      break-blocks:
+        slot: 20
+        page: 0
+        material: "DIAMOND_PICKAXE"
+        name: "&#4DCBFF&l⛏ BREAK BLOCKS"
+        lore:
+          - "&8Destruction settings"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7Controls who can break blocks"
+          - "&7inside your protected area."
+          - ""
+          - "&8Includes mining and demolition."
+          - ""
+          - "&fCurrent status: %state%"
+          - ""
+          - "&#FFA751&l➥ &eClick to cycle level"
+      storage:
+        slot: 21
+        page: 0
+        material: "CHEST"
+        name: "&#D873FF&l▣ OPEN STORAGE"
+        lore:
+          - "&8Storage settings"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7Controls who can open chests"
+          - "&7and other storage blocks."
+          - ""
+          - "&8Includes barrels, shulkers,"
+          - "&8furnaces, hoppers and more."
+          - ""
+          - "&fCurrent status: %state%"
+          - ""
+          - "&#FFA751&l➥ &eClick to cycle level"
+      workstations:
+        slot: 23
+        page: 0
+        material: "CRAFTING_TABLE"
+        name: "&#FFA751&l✦ WORKSTATIONS"
+        lore:
+          - "&8Crafting utility settings"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7Controls who can use crafting"
+          - "&7tables, anvils and enchanting tables."
+          - ""
+          - "&8Utility blocks do not store items."
+          - ""
+          - "&fCurrent status: %state%"
+          - ""
+          - "&#FFA751&l➥ &eClick to cycle level"
+      tnt:
+        slot: 24
+        page: 0
+        material: "TNT"
+        name: "&#FF4D4D&l☄ TNT EXPLOSIONS"
+        lore:
+          - "&8Explosive settings"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7Controls whether TNT and other"
+          - "&7explosions can damage your claim."
+          - ""
+          - "&8Includes creepers and explosive events."
+          - ""
+          - "&fCurrent status: %state%"
+          - ""
+          - "&#FFA751&l➥ &eClick to toggle state"
+      leaf-decay:
+        slot: 25
+        page: 0
+        material: "OAK_LEAVES"
+        name: "&#6DFF8F&l♧ LEAF DECAY"
+        lore:
+          - "&8Natural settings"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7Controls whether tree leaves"
+          - "&7can decay naturally inside"
+          - "&7your protection."
+          - ""
+          - "&fCurrent status: %state%"
+          - ""
+          - "&#FFA751&l➥ &eClick to toggle state"
+      keep-inventory:
+        slot: 10
+        page: 1
+        material: "TOTEM_OF_UNDYING"
+        name: "&#FFD700&l☠ KEEP INVENTORY"
+        lore:
+          - "&8Death settings"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7When enabled, players keep"
+          - "&7their items upon death"
+          - "&7inside the protection."
+          - ""
+          - "&fCurrent status: %state%"
+          - ""
+          - "&#FFA751&l➥ &eClick to toggle state"
+      keep-exp:
+        slot: 11
+        page: 1
+        material: "EXPERIENCE_BOTTLE"
+        name: "&#4DCBFF&l✨ KEEP EXP"
+        lore:
+          - "&8Death settings"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7When enabled, players keep"
+          - "&7their experience upon death"
+          - "&7inside the protection."
+          - ""
+          - "&fCurrent status: %state%"
+          - ""
+          - "&#FFA751&l➥ &eClick to toggle state"
+      fall-damage:
+        slot: 12
+        page: 1
+        material: "FEATHER"
+        name: "&#FFFFFF&l↓ FALL DAMAGE"
+        lore:
+          - "&8Damage settings"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7Controls whether players take"
+          - "&7fall damage inside your"
+          - "&7protection."
+          - ""
+          - "&fCurrent status: %state%"
+          - ""
+          - "&#FFA751&l➥ &eClick to toggle state"
+      potion-splash:
+        slot: 14
+        page: 1
+        material: "SPLASH_POTION"
+        name: "&#D873FF&l☣ POTION SPLASH"
+        lore:
+          - "&8Potion settings"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7Controls whether splash potions"
+          - "&7can affect players inside"
+          - "&7your protection."
+          - ""
+          - "&fCurrent status: %state%"
+          - ""
+          - "&#FFA751&l➥ &eClick to toggle state"
+      hunger-drain:
+        slot: 15
+        page: 1
+        material: "GOLDEN_APPLE"
+        name: "&#FFE259&l❤ HUNGER DRAIN"
+        lore:
+          - "&8Survival settings"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7Controls whether players lose"
+          - "&7hunger inside your protection."
+          - "&7When disabled, hunger freezes."
+          - ""
+          - "&fCurrent status: %state%"
+          - ""
+          - "&#FFA751&l➥ &eClick to toggle state"
+      back:
+        slot: 40
+        page: -1
+        material: "BONE"
+        name: "&#FF5C5C&l↩ BACK TO MENU"
+        lore:
+          - "&8Navigation"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7Return to the main protection"
+          - "&7menu to access other options."
+          - ""
+          - "&#FFA751&l➥ &eClick to go back"
+  #--------------------------------
+  #      Language Menu
+  #--------------------------------
+  language:
+    title: "&#FFE259&l✦ &8Language Selector &#FFA751&l✦"
+    size: 27
+    filler:
+      material: "BLACK_STAINED_GLASS_PANE"
+      name: "&8▪"
+    # PLAYER_HEAD items can use "texture" with a Base64 texture value, a full textures.minecraft.net URL, or only the texture hash.
+    items:
+      en:
+        slot: 11
+        material: "PLAYER_HEAD"
+        texture: "http://textures.minecraft.net/texture/52504ecd6d0a61b32a419f208af76eebb19e9bc40f85b06bfabdbe51aed43de"
+        name: "&#4DCBFF&l🌎 &fEnglish"
+        lore:
+          - "&8Language template"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7Apply the complete English"
+          - "&7configuration template."
+          - ""
+          - "&#FFA751&l➥ &eClick to apply English"
+      es:
+        slot: 15
+        material: "PLAYER_HEAD"
+        texture: "http://textures.minecraft.net/texture/91beec74e31a2c03dccc8083d056bf8fc1b376505fc29584cc1fefb3387b2245"
+        name: "&#FFE259&l🌎 &fEspañol"
+        lore:
+          - "&8Language template"
+          - "&8&m━━━━━━━━━━━━━━━━━━━━━━"
+          - "&7Apply the complete Spanish"
+          - "&7configuration template."
+          - ""
+          - "&#FFA751&l➥ &eClick to apply Spanish"
