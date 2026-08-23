@@ -562,12 +562,12 @@ public class MainConfigManager {
                 "&cCould not find language config: &f%file%&c.");
         msgLanguageNameEnglish = lang.getString("messages.commands.language-names.en", "English");
         msgLanguageNameSpanish = lang.getString("messages.commands.language-names.es", "Spanish");
-        msgAdminDebugUsage = lang.getString("messages.admin.debug.usage", "&cUsage: /mp debug <region>");
+        msgAdminDebugUsage = lang.getString("messages.admin.debug.usage", "&cUsage: /ap debug <region>");
         msgAdminDebugNotFound = lang.getString("messages.admin.debug.not-found",
                 "&cNo placed protection or WorldGuard region was found for &f%lookup%&c.");
-        msgAdminListPlacedUsage = lang.getString("messages.admin.listplaced.usage", "&cUsage: /mp listplaced");
-        msgAdminReportUsage = lang.getString("messages.admin.report.usage", "&cUsage: /mp report protections");
-        msgAdminLogsUsage = lang.getString("messages.admin.logs.usage", "&cUsage: /mp logs <region|alias>");
+        msgAdminListPlacedUsage = lang.getString("messages.admin.listplaced.usage", "&cUsage: /ap listplaced");
+        msgAdminReportUsage = lang.getString("messages.admin.report.usage", "&cUsage: /ap report protections");
+        msgAdminLogsUsage = lang.getString("messages.admin.logs.usage", "&cUsage: /ap logs <region|alias>");
         msgAdminLogsEmpty = lang.getString("messages.admin.logs.empty",
                 "&eNo protection events were found for &f%alias%&e.");
         msgAdminLogsHeader = lang.getString("messages.admin.logs.header",
@@ -591,7 +591,7 @@ public class MainConfigManager {
                 "&8%index%. &f%name% &7(%blocks% blocks, %owner%)");
         adminReportProtectionTopOwnerEntry = lang.getString("messages.admin.report.protections.top-owner-entry",
                 "&8%index%. &f%owner% &7(%count%)");
-        msgAdminRepairUsage = lang.getString("messages.admin.repair.usage", "&cUsage: /mp repair [cleanup]");
+        msgAdminRepairUsage = lang.getString("messages.admin.repair.usage", "&cUsage: /ap repair [cleanup]");
         msgAdminRepairSummary = lang.getString("messages.admin.repair.summary",
                 "&6Repair summary: &a%repaired% repaired&7, &b%cleaned% cleaned&7, &e%skipped% skipped&7.");
         msgAdminRepairSaveError = lang.getString("messages.admin.repair.save-error",
@@ -603,7 +603,7 @@ public class MainConfigManager {
                 "messages.admin.repair.cleaned-stale-tracker",
                 "&aCleaned stale tracker entry &f%region%&a.");
         msgAdminRepairOrphanTracker = lang.getString("messages.admin.repair.orphan-tracker",
-                "&eOrphan tracker found: &f%region% &7(run /mp repair cleanup to remove it).");
+                "&eOrphan tracker found: &f%region% &7(run /ap repair cleanup to remove it).");
         msgAdminRepairSkippedWorldGuardRegion = lang.getString(
                 "messages.admin.repair.skipped-worldguard-region",
                 "&eSkipped WG region &f%region% &7(%reason%).");
@@ -623,7 +623,7 @@ public class MainConfigManager {
         msgAdminRepairReasonStoneNotFound = lang.getString("messages.admin.repair.skip-reasons.stone-not-found",
                 "could not safely identify a unique protection stone at the region center");
         msgAdminMigrateUsage = lang.getString("messages.admin.migrate.usage",
-                "&cUsage: /mp migrate protectionstones <preview|apply>");
+                "&cUsage: /ap migrate protectionstones <preview|apply>");
         msgAdminMigrateSummary = lang.getString("messages.admin.migrate.summary",
                 "&6Migration summary: &a%imported% imported&7, &b%importable% importable&7, &e%warnings% warnings&7, &c%skipped% skipped&7, &d%already% already tracked&7, &4%failed% failed&7.");
         msgAdminMigrateEntry = lang.getString("messages.admin.migrate.entry",

@@ -11,7 +11,7 @@ softdepend: [Vault, ProtectionStones]
 commands:
   argosprotect:
     description: Main ArgosProtect command
-    aliases: [mp]
+    aliases: [ap]
   protection:
     description: Protection stone command
     aliases: [p]

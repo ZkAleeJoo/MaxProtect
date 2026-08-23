@@ -9,25 +9,25 @@ ArgosProtect is a modern Paper protection plugin based on WorldGuard regions, co
 - Spigot is not supported because the plugin uses Paper-only APIs.
 - WorldGuard is required.
 - Vault is optional and only needed for protection prices, economy purchases, and protection rent.
-- ProtectionStones is optional and only needed while running `/mp migrate protectionstones`.
+- ProtectionStones is optional and only needed while running `/ap migrate protectionstones`.
 
 ## Main Commands
 
-Root command: `/argosprotect` with alias `/mp`.
+Root command: `/argosprotect` with alias `/ap`.
 
 | Command | Permission | Description |
 | --- | --- | --- |
-| `/mp create` | `argosprotect.admin` | Opens the admin protection-stone creation menu. |
-| `/mp reload` | `argosprotect.admin` | Reloads config and language files. |
-| `/mp lang` | `argosprotect.admin` | Opens the language selection menu. |
-| `/mp debug <region>` | `argosprotect.admin.debug` | Prints owner, members, YAML state, WorldGuard state, bounds, and stone coordinates for a placed protection or WG region. |
-| `/mp listplaced` | `argosprotect.admin.listplaced` | Opens the admin menu with every tracked placed protection. Click an entry to print debug details. |
-| `/mp report protections` | `argosprotect.admin.report` | Prints SQL-backed totals, active/orphaned counts, largest regions, top owners, and logged event count. |
-| `/mp logs <region-or-alias>` | `argosprotect.admin.logs` | Shows the latest stored events for any tracked protection. |
-| `/mp repair` | `argosprotect.admin.repair` | Repairs missing SQL tracking for safe ArgosProtect WorldGuard regions when the protection YAML and center stone can be identified. |
-| `/mp repair cleanup` | `argosprotect.admin.repair` | Removes stale tracker entries whose WorldGuard region no longer exists. It does not delete WorldGuard regions. |
-| `/mp migrate protectionstones preview` | `argosprotect.admin.migrate` | Scans ProtectionStones WorldGuard regions and reports what ArgosProtect can import without changing data. |
-| `/mp migrate protectionstones apply` | `argosprotect.admin.migrate` | Imports supported ProtectionStones regions into `protections.db` while keeping original region IDs, owners, members, bounds, and physical stone materials. |
+| `/ap create` | `argosprotect.admin` | Opens the admin protection-stone creation menu. |
+| `/ap reload` | `argosprotect.admin` | Reloads config and language files. |
+| `/ap lang` | `argosprotect.admin` | Opens the language selection menu. |
+| `/ap debug <region>` | `argosprotect.admin.debug` | Prints owner, members, YAML state, WorldGuard state, bounds, and stone coordinates for a placed protection or WG region. |
+| `/ap listplaced` | `argosprotect.admin.listplaced` | Opens the admin menu with every tracked placed protection. Click an entry to print debug details. |
+| `/ap report protections` | `argosprotect.admin.report` | Prints SQL-backed totals, active/orphaned counts, largest regions, top owners, and logged event count. |
+| `/ap logs <region-or-alias>` | `argosprotect.admin.logs` | Shows the latest stored events for any tracked protection. |
+| `/ap repair` | `argosprotect.admin.repair` | Repairs missing SQL tracking for safe ArgosProtect WorldGuard regions when the protection YAML and center stone can be identified. |
+| `/ap repair cleanup` | `argosprotect.admin.repair` | Removes stale tracker entries whose WorldGuard region no longer exists. It does not delete WorldGuard regions. |
+| `/ap migrate protectionstones preview` | `argosprotect.admin.migrate` | Scans ProtectionStones WorldGuard regions and reports what ArgosProtect can import without changing data. |
+| `/ap migrate protectionstones apply` | `argosprotect.admin.migrate` | Imports supported ProtectionStones regions into `protections.db` while keeping original region IDs, owners, members, bounds, and physical stone materials. |
 
 ## Protection Commands
 
@@ -64,11 +64,11 @@ Root command: `/protection` with alias `/p`.
 | Permission | Default | Description |
 | --- | --- | --- |
 | `argosprotect.admin` | OP | Full ArgosProtect admin access. Includes admin debug/list/repair/report/migrate and protection child permissions. |
-| `argosprotect.admin.debug` | OP | Allows `/mp debug <region>`. |
-| `argosprotect.admin.listplaced` | OP | Allows `/mp listplaced`. |
-| `argosprotect.admin.repair` | OP | Allows `/mp repair` and `/mp repair cleanup`. |
-| `argosprotect.admin.report` | OP | Allows `/mp report protections`. |
-| `argosprotect.admin.logs` | OP | Allows `/mp logs <region-or-alias>` for any tracked protection. |
+| `argosprotect.admin.debug` | OP | Allows `/ap debug <region>`. |
+| `argosprotect.admin.listplaced` | OP | Allows `/ap listplaced`. |
+| `argosprotect.admin.repair` | OP | Allows `/ap repair` and `/ap repair cleanup`. |
+| `argosprotect.admin.report` | OP | Allows `/ap report protections`. |
+| `argosprotect.admin.logs` | OP | Allows `/ap logs <region-or-alias>` for any tracked protection. |
 | `argosprotect.admin.migrate` | OP | Allows previewing and applying supported protection-plugin migrations. |
 | `argosprotect.protection` | Everyone | Allows player protection commands that require a base permission, including `/p rent`. |
 | `argosprotect.protection.give` | OP | Allows `/p give`. |
@@ -127,7 +127,7 @@ Example LuckPerms setup:
 /lp group mvp permission set argosprotect.limits.mvp true
 ```
 
-You can add more ranks under `limits.groups` in `config.yml`. Each group can define its own `permission`, `priority`, `max-protections`, `max-radius`, `min-price`, and `max-price`. After changing limits, reload the plugin with `/mp reload`.
+You can add more ranks under `limits.groups` in `config.yml`. Each group can define its own `permission`, `priority`, `max-protections`, `max-radius`, `min-price`, and `max-price`. After changing limits, reload the plugin with `/ap reload`.
 
 ### Optional Extra Permissions
 
@@ -138,12 +138,12 @@ Use these only for selected ranks or staff:
 | `argosprotect.protection.fly` | VIP, MVP, staff | Lets the player use `/p fly`, but only inside protections they can access. Flight is removed when leaving, dying, disconnecting, changing world, or losing access. |
 | `argosprotect.protection.give` | Staff, crates/rewards operators | Lets the sender use `/p give <player> <protection> <amount>`. Keep this away from normal players because it creates protection items. |
 | `argosprotect.protection.remove.others` | Senior staff only | Lets staff remove another player's protection stone. This can affect player property, so treat it as a moderation/admin permission. |
-| `argosprotect.admin.debug` | Support staff | Allows `/mp debug <region>` for diagnosing a placed protection or WorldGuard region. |
-| `argosprotect.admin.listplaced` | Support staff | Allows `/mp listplaced`, the admin list of tracked protections. |
-| `argosprotect.admin.report` | Admin staff | Allows `/mp report protections`, useful for auditing totals and database state. |
+| `argosprotect.admin.debug` | Support staff | Allows `/ap debug <region>` for diagnosing a placed protection or WorldGuard region. |
+| `argosprotect.admin.listplaced` | Support staff | Allows `/ap listplaced`, the admin list of tracked protections. |
+| `argosprotect.admin.report` | Admin staff | Allows `/ap report protections`, useful for auditing totals and database state. |
 | `argosprotect.admin.logs` | Support/admin staff | Allows staff to inspect recent event logs for any tracked protection. |
-| `argosprotect.admin.repair` | Owner/admin only | Allows `/mp repair` and cleanup. This changes tracking data and should not be given widely. |
-| `argosprotect.admin.migrate` | Owner/admin only | Allows `/mp migrate protectionstones preview` and `/mp migrate protectionstones apply`. This imports external protection state and should not be given widely. |
+| `argosprotect.admin.repair` | Owner/admin only | Allows `/ap repair` and cleanup. This changes tracking data and should not be given widely. |
+| `argosprotect.admin.migrate` | Owner/admin only | Allows `/ap migrate protectionstones preview` and `/ap migrate protectionstones apply`. This imports external protection state and should not be given widely. |
 | `argosprotect.admin` | Owner/admin only | Full plugin admin access. It includes admin debug/list/repair/report/migrate plus protection child permissions. |
 
 ### Suggested Server Setup
@@ -159,14 +159,14 @@ For a standard server:
 | Admin | `argosprotect.admin` |
 | Owner | `argosprotect.admin` + OP if you want full server-level control |
 
-Test the setup in game with a non-OP account. Check `/p buy`, placing a stone, `/p settings`, `/p member add`, `/p home`, `/p logs`, `/p transfer` from the owner account, `/p rent` if rent is enabled, and verify that restricted commands such as `/p give`, `/p fly`, `/mp logs`, `/mp repair`, and breaking another player's protection stone are blocked unless the rank is supposed to have them.
+Test the setup in game with a non-OP account. Check `/p buy`, placing a stone, `/p settings`, `/p member add`, `/p home`, `/p logs`, `/p transfer` from the owner account, `/p rent` if rent is enabled, and verify that restricted commands such as `/p give`, `/p fly`, `/ap logs`, `/ap repair`, and breaking another player's protection stone are blocked unless the rank is supposed to have them.
 
 ## Runtime Files
 
 - `protections/<id>.yml`: editable source for each protection stone, item, radius, price, WorldGuard defaults, and actionbar text.
 - `protections.db`: SQLite runtime database for placed stones, owner/member state, pending invitations, event logs, aliases, homes, flags, rent status, region bounds, and stone coordinates.
 
-Do not edit `protections.db` by hand while the server is running. Use the YAML files only for configurable templates, menus, language, and protection definitions. Use `/mp repair` only when WorldGuard and the SQL tracking data drift out of sync.
+Do not edit `protections.db` by hand while the server is running. Use the YAML files only for configurable templates, menus, language, and protection definitions. Use `/ap repair` only when WorldGuard and the SQL tracking data drift out of sync.
 
 ## ProtectionStones Migration
 
@@ -175,13 +175,13 @@ ArgosProtect can import existing ProtectionStones regions so the server can stop
 Run this first while ProtectionStones is still installed and enabled:
 
 ```text
-/mp migrate protectionstones preview
+/ap migrate protectionstones preview
 ```
 
 Review the report and make backups of your WorldGuard `regions.yml` files plus `plugins/ArgosProtect/protections.db`. Then run:
 
 ```text
-/mp migrate protectionstones apply
+/ap migrate protectionstones apply
 ```
 
 Imported protections keep their original WorldGuard region IDs, owner UUIDs, member UUIDs, bounds, home when available, and physical protection block material. During `apply`, ArgosProtect reuses an existing `protections/<id>.yml` with the same material and detected radius when possible; otherwise it creates one automatically, such as `ps_diamond_block_r25.yml`, with `price: 0` and `price-rent: 0`. The generated YAML ID is used as the ArgosProtect type, while the original WorldGuard region ID stays unchanged.

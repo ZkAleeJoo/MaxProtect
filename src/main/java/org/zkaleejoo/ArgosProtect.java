@@ -17,9 +17,9 @@ import net.milkbowl.vault.economy.Economy;
 
 public final class ArgosProtect extends JavaPlugin {
 
-    public static final String UPDATE_DOWNLOAD_URL = "https://pixeleast.com/product/700967-maxprotections";
+    public static final String UPDATE_DOWNLOAD_URL = "https://modrinth.com/plugin/argosprotect";
     private static final long UPDATE_CHECK_INTERVAL_TICKS = 20L * 60L * 60L * 5L;
-    private static final int BSTATS_PLUGIN_ID = 31526;
+    private static final int BSTATS_PLUGIN_ID = 33606;
 
     private MainConfigManager mainConfigManager;
     private ProtectionCreationManager protectionCreationManager;
@@ -116,7 +116,7 @@ public final class ArgosProtect extends JavaPlugin {
                                 .getColoredMessage("&a&lArgosProtect &8» &f&lNEW VERSION " + version));
                 Bukkit.getConsoleSender().sendMessage(
                         MessageUtils.getColoredMessage(
-                                "&a&lArgosProtect &8» &fDownload it now at the following link: &7https://pixeleast.com/product/700967-maxprotections"));
+                                "&a&lArgosProtect &8» &fDownload it now at the following link: &7https://pixeleast.com/product/700967-argosprotect"));
             }
         });
     }
