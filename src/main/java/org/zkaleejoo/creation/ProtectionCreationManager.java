@@ -8,11 +8,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.zkaleejoo.MaxProtections;
+import org.zkaleejoo.ArgosProtect;
 import org.zkaleejoo.config.MainConfigManager.MenuItemConfig;
 import org.zkaleejoo.protection.ProtectionValidation;
 import org.zkaleejoo.utils.ItemBuilder;
-import org.zkaleejoo.utils.MaxProtectionsHolder;
+import org.zkaleejoo.utils.ArgosProtectHolder;
 import org.zkaleejoo.utils.MessageUtils;
 
 import java.io.File;
@@ -28,18 +28,18 @@ import java.util.UUID;
 
 public class ProtectionCreationManager {
 
-    private final MaxProtections plugin;
+    private final ArgosProtect plugin;
     private final Map<UUID, ProtectionDraft> drafts = new HashMap<>();
     private final Map<UUID, String> pendingInputs = new HashMap<>();
     private final Set<UUID> menuRefreshes = new HashSet<>();
 
-    public ProtectionCreationManager(MaxProtections plugin) {
+    public ProtectionCreationManager(ArgosProtect plugin) {
         this.plugin = plugin;
     }
 
     public void openMenu(Player player) {
         ProtectionDraft draft = drafts.computeIfAbsent(player.getUniqueId(), ignored -> new ProtectionDraft());
-        Inventory inv = Bukkit.createInventory(new MaxProtectionsHolder("CREATION_MENU"),
+        Inventory inv = Bukkit.createInventory(new ArgosProtectHolder("CREATION_MENU"),
                 plugin.getConfigManager().getCreationMenuSize(),
                 MessageUtils.getColoredMessage(plugin.getConfigManager().getCreationMenuTitle()));
 
@@ -369,7 +369,7 @@ public class ProtectionCreationManager {
     }
 
     private boolean isCreationMenuOpen(Player player) {
-        return player.getOpenInventory().getTopInventory().getHolder() instanceof MaxProtectionsHolder holder
+        return player.getOpenInventory().getTopInventory().getHolder() instanceof ArgosProtectHolder holder
                 && holder.getMenuId().equals("CREATION_MENU");
     }
 }

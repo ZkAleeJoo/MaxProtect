@@ -10,7 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
-import org.zkaleejoo.MaxProtections;
+import org.zkaleejoo.ArgosProtect;
 import org.zkaleejoo.protection.migration.ProtectionMigrationSupport.MigrationDecision;
 import org.zkaleejoo.protection.migration.ProtectionMigrationSupport.MigrationMember;
 import org.zkaleejoo.protection.migration.ProtectionMigrationSupport.MigrationStatus;
@@ -30,9 +30,9 @@ public final class ProtectionStonesMigrationScanner {
     private static final String FLAG_NAME = "ps-name";
     private static final String FLAG_MERGED_REGIONS = "ps-merged-regions";
 
-    private final MaxProtections plugin;
+    private final ArgosProtect plugin;
 
-    public ProtectionStonesMigrationScanner(MaxProtections plugin) {
+    public ProtectionStonesMigrationScanner(ArgosProtect plugin) {
         this.plugin = plugin;
     }
 

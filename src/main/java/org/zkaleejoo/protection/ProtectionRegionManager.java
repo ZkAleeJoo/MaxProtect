@@ -52,10 +52,10 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 import org.zkaleejoo.utils.SchedulerUtils.TaskWrapper;
-import org.zkaleejoo.MaxProtections;
+import org.zkaleejoo.ArgosProtect;
 import org.zkaleejoo.config.ProtectionFeedbackConfig.CinematicPreview;
 import org.zkaleejoo.config.ProtectionFeedbackConfig.VisualEffect;
-import org.zkaleejoo.permissions.MaxProtectionsPermissions;
+import org.zkaleejoo.permissions.ArgosProtectPermissions;
 import org.zkaleejoo.protection.migration.ProtectionMigrationSupport;
 import org.zkaleejoo.protection.migration.ProtectionMigrationSupport.MigrationDecision;
 import org.zkaleejoo.protection.migration.ProtectionMigrationSupport.MigrationMember;
@@ -95,7 +95,7 @@ public class ProtectionRegionManager implements Listener {
             .withZone(ZoneId.systemDefault());
     private static final long PREVIEW_FALL_DAMAGE_GRACE_MILLIS = 2500L;
 
-    private final MaxProtections plugin;
+    private final ArgosProtect plugin;
     private final NamespacedKey protectionIdKey;
     private final NamespacedKey protectionRadiusKey;
     private final Map<UUID, String> currentRegionByPlayer = new HashMap<>();
@@ -113,7 +113,7 @@ public class ProtectionRegionManager implements Listener {
     private final ProtectionCache cache;
     private TaskWrapper rentTask;
 
-    public ProtectionRegionManager(MaxProtections plugin) {
+    public ProtectionRegionManager(ArgosProtect plugin) {
         this.plugin = plugin;
         this.protectionIdKey = new NamespacedKey(plugin, "protection_id");
         this.protectionRadiusKey = new NamespacedKey(plugin, "protection_radius");
@@ -220,7 +220,7 @@ public class ProtectionRegionManager implements Listener {
 
         event.setCancelled(true);
         if (!placed.ownerUuid().equals(player.getUniqueId().toString())
-                && !player.hasPermission(MaxProtectionsPermissions.PROTECTION_REMOVE_OTHERS)) {
+                && !player.hasPermission(ArgosProtectPermissions.PROTECTION_REMOVE_OTHERS)) {
             sendError(player, plugin.getConfigManager().getMsgProtectionRemoveNotOwner());
             return;
         }
@@ -719,7 +719,7 @@ public class ProtectionRegionManager implements Listener {
             return new RentPaymentResult(RentPaymentStatus.NOT_FOUND, null, 0L, "");
         }
         if (!placed.ownerUuid().equals(player.getUniqueId().toString())
-                && !player.hasPermission(MaxProtectionsPermissions.ADMIN)) {
+                && !player.hasPermission(ArgosProtectPermissions.ADMIN)) {
             return new RentPaymentResult(RentPaymentStatus.NOT_OWNER, toContext(placed), placed.rentPaidUntilMillis(),
                     "");
         }
@@ -785,7 +785,7 @@ public class ProtectionRegionManager implements Listener {
         String normalized = lookup.toLowerCase(Locale.ROOT);
         return placedProtections.stream()
                 .filter(placed -> placed.ownerUuid().equals(player.getUniqueId().toString())
-                        || player.hasPermission(MaxProtectionsPermissions.ADMIN))
+                        || player.hasPermission(ArgosProtectPermissions.ADMIN))
                 .filter(placed -> matchesLookup(placed, normalized))
                 .findFirst()
                 .orElse(null);
@@ -873,7 +873,7 @@ public class ProtectionRegionManager implements Listener {
         }
         int priority = yaml.getInt("protection.priority", 0);
         String regionIdFormat = yaml.getString("worldguard.region-id-format",
-                "maxprotections_%player%_%id%_%world%_%x%_%y%_%z%");
+                "argosprotect_%player%_%id%_%world%_%x%_%y%_%z%");
         String actionbarEnter = yaml.getString("actionbar.enter", yaml.getString("protection.flags.actionbar.enter",
                 plugin.getConfigManager().getProtectionDefaultActionbarEnter()));
         String actionbarExit = yaml.getString("actionbar.exit", yaml.getString("protection.flags.actionbar.exit",
@@ -1173,7 +1173,7 @@ public class ProtectionRegionManager implements Listener {
     }
 
     public boolean canUseFlag(Player player, Location location, ProtectionFlagDefinition definition) {
-        if (player.hasPermission(MaxProtectionsPermissions.ADMIN)) {
+        if (player.hasPermission(ArgosProtectPermissions.ADMIN)) {
             return true;
         }
 
@@ -1339,7 +1339,7 @@ public class ProtectionRegionManager implements Listener {
             PlacedProtection existing = findProtection(candidate.regionId());
             if (existing != null && !canAttachMigrationYaml(existing)) {
                 decisions.add(new MigrationDecision(candidate.regionId(), candidate.worldName(),
-                        MigrationStatus.ALREADY_IMPORTED, "already tracked by MaxProtections"));
+                        MigrationStatus.ALREADY_IMPORTED, "already tracked by ArgosProtect"));
                 continue;
             }
             YamlResolution yamlResolution = ProtectionStonesMigrationYamlSupport.plan(protectionsFolder, candidate);
@@ -1576,11 +1576,11 @@ public class ProtectionRegionManager implements Listener {
     }
 
     private boolean canAccess(Player player, PlacedProtection placed) {
-        return player.hasPermission(MaxProtectionsPermissions.ADMIN) || rankFor(player, placed).isPresent();
+        return player.hasPermission(ArgosProtectPermissions.ADMIN) || rankFor(player, placed).isPresent();
     }
 
     private boolean canManageProtection(Player player, PlacedProtection placed) {
-        if (player.hasPermission(MaxProtectionsPermissions.ADMIN)) {
+        if (player.hasPermission(ArgosProtectPermissions.ADMIN)) {
             return true;
         }
         return rankFor(player, placed)
@@ -1879,7 +1879,7 @@ public class ProtectionRegionManager implements Listener {
         if (context == null) {
             return false;
         }
-        if (player.hasPermission(MaxProtectionsPermissions.ADMIN)) {
+        if (player.hasPermission(ArgosProtectPermissions.ADMIN)) {
             return true;
         }
         PlacedProtection placed = findProtection(context.regionId());
@@ -1895,8 +1895,8 @@ public class ProtectionRegionManager implements Listener {
         PlacedProtection placed = findProtection(context.regionId());
         ProtectionMemberRank rank = placed == null ? null : rankFor(player, placed).orElse(null);
         return canChangeFlags(
-                player.hasPermission(MaxProtectionsPermissions.ADMIN),
-                player.hasPermission(MaxProtectionsPermissions.FLAGS),
+                player.hasPermission(ArgosProtectPermissions.ADMIN),
+                player.hasPermission(ArgosProtectPermissions.FLAGS),
                 rank);
     }
 
@@ -1998,7 +1998,7 @@ public class ProtectionRegionManager implements Listener {
             return RemoveResult.REGION_UNAVAILABLE;
         }
         if (!placed.ownerUuid().equals(player.getUniqueId().toString())
-                && !player.hasPermission(MaxProtectionsPermissions.PROTECTION_REMOVE_OTHERS)) {
+                && !player.hasPermission(ArgosProtectPermissions.PROTECTION_REMOVE_OTHERS)) {
             return RemoveResult.NOT_OWNER;
         }
 

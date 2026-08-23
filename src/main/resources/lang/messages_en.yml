@@ -5,7 +5,7 @@
 #\____|__  /\____|__  /___/\  \____|__  /_______  /\______  /___/_______  /
 #        \/         \/      \_/       \/        \/        \/            \/ 
 # 
-# MaxProtections - Message EN
+# ArgosProtect - Message EN
 messages:
   update-available: "&f&lNEW VERSION: &7{version}"
   update-current: "&7Your current version: &c{version}"
@@ -13,7 +13,7 @@ messages:
   commands:
     no-permission: "&#FF4D4D&l✖ &cYou do not have permission to use this command."
     plugin-reload: "&#7CFF6B&l✔ &#B8FFB0Settings and messages have been successfully reloaded."
-    usage: "&#FFE259&l✦ &7Use: &#FFA751/maxprotections <create | reload | lang | debug | listplaced | report | logs | repair | migrate>"
+    usage: "&#FFE259&l✦ &7Use: &#FFA751/argosprotect <create | reload | lang | debug | listplaced | report | logs | repair | migrate>"
     player-only: "&#FF4D4D&l✖ &cThis command can only be executed by a player."
     language-changed: "&#7CFF6B&l✔ &#B8FFB0Language changed to &f%language%&#B8FFB0. Reload completed."
     language-file-missing: "&#FF4D4D&l✖ &cLanguage file was not found in extra_lang: &f%file%"
@@ -24,7 +24,7 @@ messages:
     debug:
       usage: "&#FF4D4D&lX &cUsage: /mp debug <region>"
       not-found: "&#FF4D4D&lX &cNo placed protection or WorldGuard region was found for &f%lookup%&c."
-      header: "&#FFE259&lMaxProtections Debug &8- &f%region%"
+      header: "&#FFE259&lArgosProtect Debug &8- &f%region%"
       tracking-missing: "&#FFB84DTracking: &#FF5555Missing from protections.db"
       tracking-present: "&#FFB84DTracking: &#55FF55Present in protections.db"
       protection-yaml: "&#FFB84DProtection YAML: %state% &7(%protection_id%.yml)"
@@ -51,7 +51,7 @@ messages:
       usage: "&#FF4D4D&lX &cUsage: /mp report protections"
       protections:
         lines:
-          - "&#FFE259&lMaxProtections Protection Report"
+          - "&#FFE259&lArgosProtect Protection Report"
           - "&#55FF55Active: &f%active% &8| &#FFB84DOrphaned: &f%orphaned% &8| &#55C7FFTotal: &f%total%"
           - "&#C66BFFEvents logged: &f%events%"
           - "&#FFA751Largest regions:"
@@ -77,7 +77,7 @@ messages:
       repaired-worldguard-region: "&#55FF55Repaired tracking for WG region &f%region%&#55FF55."
       save-rollback: "&#FF4D4DCould not save protections.db. No in-memory changes were kept."
       skip-reasons:
-        region-id-mismatch: "region id does not match a known MaxProtections protection id"
+        region-id-mismatch: "region id does not match a known ArgosProtect protection id"
         protection-yaml-invalid: "protection YAML is missing or invalid"
         no-owner: "WorldGuard region has no UUID owner"
         stone-not-found: "could not safely identify a unique protection stone at the region center"
@@ -85,7 +85,7 @@ messages:
       usage: "&#FF4D4D&lX &cUsage: /mp migrate protectionstones <preview|apply>"
       summary: "&#FFE259Migration summary: &#55FF55%imported% imported&7, &#55C7FF%importable% importable&7, &#FFF3B0%warnings% warnings&7, &#FFB84D%skipped% skipped&7, &#C66BFF%already% already tracked&7, &#FF4D4D%failed% failed&7."
       entry: "&8- &f%region% &7(%world%) &8%status% &7- %reason%"
-      backup-warning: "&#FFB84DBack up WorldGuard regions.yml files and plugins/MaxProtections/protections.db before running apply."
+      backup-warning: "&#FFB84DBack up WorldGuard regions.yml files and plugins/ArgosProtect/protections.db before running apply."
   creation:
     prompts:
       protection-id: "&#FFE259&l✎ &#FFF3B0Type the protection ID in chat. &7Use &fcancel &7to go back."

@@ -1,6 +1,6 @@
 package org.zkaleejoo.utils;
 
-import org.zkaleejoo.MaxProtections;
+import org.zkaleejoo.ArgosProtect;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -12,10 +12,10 @@ import java.util.function.Consumer;
 
 public class UpdateChecker {
 
-    private static final String GITHUB_VERSION_URL = "https://gist.githubusercontent.com/ZkAleeJoo/16e20017d7c91f93789ee5c831635758/raw/MaxProtections.txt";
-    private final MaxProtections plugin;
+    private static final String GITHUB_VERSION_URL = "https://gist.githubusercontent.com/ZkAleeJoo/16e20017d7c91f93789ee5c831635758/raw/ArgosProtect.txt";
+    private final ArgosProtect plugin;
 
-    public UpdateChecker(MaxProtections plugin) {
+    public UpdateChecker(ArgosProtect plugin) {
         this.plugin = plugin;
     }
 
@@ -27,7 +27,7 @@ public class UpdateChecker {
                 connection = (HttpURLConnection) url.openConnection();
 
                 connection.setRequestMethod("GET");
-                connection.setRequestProperty("User-Agent", "MaxProtections-UpdateChecker");
+                connection.setRequestProperty("User-Agent", "ArgosProtect-UpdateChecker");
                 connection.setConnectTimeout(5000);
                 connection.setReadTimeout(5000);
 

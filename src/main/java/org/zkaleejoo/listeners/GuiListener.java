@@ -9,16 +9,16 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
-import org.zkaleejoo.MaxProtections;
-import org.zkaleejoo.utils.MaxProtectionsHolder;
+import org.zkaleejoo.ArgosProtect;
+import org.zkaleejoo.utils.ArgosProtectHolder;
 import org.zkaleejoo.utils.MessageUtils;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 
 public class GuiListener implements Listener {
-    private final MaxProtections plugin;
+    private final ArgosProtect plugin;
 
-    public GuiListener(MaxProtections plugin) {
+    public GuiListener(ArgosProtect plugin) {
         this.plugin = plugin;
     }
 
@@ -29,11 +29,11 @@ public class GuiListener implements Listener {
         if (event.getInventory().getHolder() == null)
             return;
 
-        if (event.getInventory().getHolder() instanceof MaxProtectionsHolder) {
+        if (event.getInventory().getHolder() instanceof ArgosProtectHolder) {
 
             event.setCancelled(true);
 
-            MaxProtectionsHolder holder = (MaxProtectionsHolder) event.getInventory().getHolder();
+            ArgosProtectHolder holder = (ArgosProtectHolder) event.getInventory().getHolder();
             String menuId = holder.getMenuId();
 
             if (menuId.equals("CREATION_MENU")) {
@@ -152,7 +152,7 @@ public class GuiListener implements Listener {
 
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
-        if (event.getInventory().getHolder() instanceof MaxProtectionsHolder) {
+        if (event.getInventory().getHolder() instanceof ArgosProtectHolder) {
             event.setCancelled(true);
         }
     }
@@ -162,7 +162,7 @@ public class GuiListener implements Listener {
         if (!(event.getPlayer() instanceof Player player)) {
             return;
         }
-        if (!(event.getInventory().getHolder() instanceof MaxProtectionsHolder holder)) {
+        if (!(event.getInventory().getHolder() instanceof ArgosProtectHolder holder)) {
             return;
         }
         if (!holder.getMenuId().equals("CREATION_MENU")) {

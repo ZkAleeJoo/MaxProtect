@@ -15,7 +15,7 @@ import org.zkaleejoo.utils.UpdateChecker;
 
 import net.milkbowl.vault.economy.Economy;
 
-public final class MaxProtections extends JavaPlugin {
+public final class ArgosProtect extends JavaPlugin {
 
     public static final String UPDATE_DOWNLOAD_URL = "https://pixeleast.com/product/700967-maxprotections";
     private static final long UPDATE_CHECK_INTERVAL_TICKS = 20L * 60L * 60L * 5L;
@@ -53,19 +53,19 @@ public final class MaxProtections extends JavaPlugin {
         registerListeners();
 
         Bukkit.getConsoleSender().sendMessage(
-                MessageUtils.getColoredMessage("&a&lMaxProtections &8» &aThe plugin was successfully activated"));
-        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
-                "&a&lMaxProtections &8» &a   _____                __________                __                 __  .__                      "));
-        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
-                "&a&lMaxProtections &8» &a  /     \\ _____  ___  __\\______   \\_______  _____/  |_  ____   _____/  |_|__| ____   ____   ______"));
-        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
-                "&a&lMaxProtections &8» &a /  \\ /  \\\\__  \\ \\  \\/  /|     ___/\\_  __ \\/  _ \\   __\\/ __ \\_/ ___\\   __\\  |/  _ \\ /    \\ /  ___/"));
-        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
-                "&a&lMaxProtections &8» &a/    Y    \\/ __ \\_>    < |    |     |  | \\(  <_> )  | \\  ___/\\  \\___|  | |  (  <_> )   |  \\\\___ \\ "));
-        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
-                "&a&lMaxProtections &8» &a\\____|__  (____  /__/\\_ \\|____|     |__|   \\____/|__|  \\___  >\\___  >__| |__|\\____/|___|  /____  >"));
-        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
-                "&a&lMaxProtections &8» &a        \\/     \\/      \\/                                  \\/     \\/                    \\/     \\/ "));
+                MessageUtils.getColoredMessage("&a&lArgosProtect &8» &aThe plugin was successfully activated"));
+        String[] banner = {
+                "&a    ___                        ____            __          __ ",
+                "&a   /   |  _________ ___  _____/ __ \\_________/ /____  _____/ /_",
+                "&a  / /| | / ___/ __ `/ / / / ___/ /_/ / ___/ __ \\/ _ \\/ ___/ __/",
+                "&a / ___ |/ /  / /_/ / /_/ (__  ) ____/ /  / /_/ /  __/ /__/ /_  ",
+                "&a/_/  |_/_/   \\__, /\\____/____/_/   /_/  \\____/\\___/\\___/\\__/  ",
+                "&a            /____/                                             ",
+                "&7                             v" + getPluginMeta().getVersion()
+        };
+        for (String line : banner) {
+            Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(line));
+        }
 
         startUpdateChecks();
     }
@@ -81,7 +81,7 @@ public final class MaxProtections extends JavaPlugin {
         }
         Bukkit.getConsoleSender().sendMessage(
                 MessageUtils
-                        .getColoredMessage("&a&lMaxProtections &8» &cThe plugin was successfully desactivated"));
+                        .getColoredMessage("&a&lArgosProtect &8» &cThe plugin was successfully desactivated"));
     }
 
     private void startUpdateChecks() {
@@ -107,16 +107,16 @@ public final class MaxProtections extends JavaPlugin {
             if (this.getPluginMeta().getVersion().equalsIgnoreCase(version)) {
                 this.latestVersion = null;
                 Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
-                        "&a&lMaxProtections &8» &aA check for updates was performed and nothing was found."));
+                        "&a&lArgosProtect &8» &aA check for updates was performed and nothing was found."));
             } else {
                 this.latestVersion = version;
 
                 Bukkit.getConsoleSender()
                         .sendMessage(MessageUtils
-                                .getColoredMessage("&a&lMaxProtections &8» &f&lNEW VERSION " + version));
+                                .getColoredMessage("&a&lArgosProtect &8» &f&lNEW VERSION " + version));
                 Bukkit.getConsoleSender().sendMessage(
                         MessageUtils.getColoredMessage(
-                                "&a&lMaxProtections &8» &fDownload it now at the following link: &7https://pixeleast.com/product/700967-maxprotections"));
+                                "&a&lArgosProtect &8» &fDownload it now at the following link: &7https://pixeleast.com/product/700967-maxprotections"));
             }
         });
     }
@@ -125,7 +125,7 @@ public final class MaxProtections extends JavaPlugin {
     private void registerCommands() {
         MainCommand mainCommand = new MainCommand(this);
         ProtectionCommand protectionCommand = new ProtectionCommand(this);
-        registerCommand("maxprotections", mainCommand, mainCommand);
+        registerCommand("argosprotect", mainCommand, mainCommand);
         registerCommand("protection", protectionCommand, protectionCommand);
     }
 

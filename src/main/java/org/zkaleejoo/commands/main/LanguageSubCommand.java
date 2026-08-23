@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.zkaleejoo.commands.core.PluginSubCommand;
 import org.zkaleejoo.config.MainConfigManager.MenuItemConfig;
 import org.zkaleejoo.utils.ItemBuilder;
-import org.zkaleejoo.utils.MaxProtectionsHolder;
+import org.zkaleejoo.utils.ArgosProtectHolder;
 import org.zkaleejoo.utils.MessageUtils;
 
 public class LanguageSubCommand implements PluginSubCommand {
@@ -43,7 +43,7 @@ public class LanguageSubCommand implements PluginSubCommand {
             return;
         }
 
-        Inventory inv = Bukkit.createInventory(new MaxProtectionsHolder("LANG_MENU"),
+        Inventory inv = Bukkit.createInventory(new ArgosProtectHolder("LANG_MENU"),
                 context.plugin().getConfigManager().getLanguageMenuSize(),
                 MessageUtils.getColoredMessage(context.plugin().getConfigManager().getLanguageMenuTitle()));
 

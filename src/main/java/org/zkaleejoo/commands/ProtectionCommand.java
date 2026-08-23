@@ -6,7 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.zkaleejoo.MaxProtections;
+import org.zkaleejoo.ArgosProtect;
 import org.zkaleejoo.commands.core.CommandDispatcher;
 import org.zkaleejoo.commands.protection.AliasSubCommand;
 import org.zkaleejoo.commands.protection.BuySubCommand;
@@ -32,10 +32,10 @@ import org.zkaleejoo.utils.MessageUtils;
 
 public class ProtectionCommand implements CommandExecutor, TabCompleter {
 
-    private final MaxProtections plugin;
+    private final ArgosProtect plugin;
     private final CommandDispatcher dispatcher;
 
-    public ProtectionCommand(MaxProtections plugin) {
+    public ProtectionCommand(ArgosProtect plugin) {
         this.plugin = plugin;
         ProtectionCommandContext context = new ProtectionCommandContext(plugin);
         this.dispatcher = new CommandDispatcher(List.of(

@@ -45,7 +45,7 @@ public final class SqliteProtectionStorage implements ProtectionStorage {
             config.setConnectionTimeout(5000);
             config.setIdleTimeout(60000);
             config.setMaxLifetime(300000);
-            config.setPoolName("MaxProtections-SQLite");
+            config.setPoolName("ArgosProtect-SQLite");
             config.setConnectionInitSql("PRAGMA foreign_keys = ON; PRAGMA journal_mode = WAL;");
             config.addDataSourceProperty("journal_mode", "WAL");
             config.addDataSourceProperty("synchronous", "NORMAL");

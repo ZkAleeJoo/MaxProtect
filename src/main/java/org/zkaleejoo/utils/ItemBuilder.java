@@ -177,7 +177,7 @@ public class ItemBuilder {
         try {
             if (withName) {
                 return Bukkit.class.getMethod(methodName, UUID.class, String.class)
-                        .invoke(null, UUID.randomUUID(), "MaxProtections");
+                        .invoke(null, UUID.randomUUID(), "ArgosProtect");
             }
             return Bukkit.class.getMethod(methodName, UUID.class).invoke(null, UUID.randomUUID());
         } catch (ReflectiveOperationException | RuntimeException ignored) {
@@ -190,7 +190,7 @@ public class ItemBuilder {
             return false;
         }
         try {
-            PlayerProfile profile = Bukkit.createProfile(UUID.randomUUID(), "MaxProtections");
+            PlayerProfile profile = Bukkit.createProfile(UUID.randomUUID(), "ArgosProtect");
             profile.setProperty(new ProfileProperty("textures", textureBase64));
             skullMeta.setPlayerProfile(profile);
             return true;

@@ -7,28 +7,28 @@ import java.util.Locale;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.MaxProtections;
-import org.zkaleejoo.permissions.MaxProtectionsPermissions;
+import org.zkaleejoo.ArgosProtect;
+import org.zkaleejoo.permissions.ArgosProtectPermissions;
 import org.zkaleejoo.protection.storage.ProtectionStorage;
 import org.zkaleejoo.utils.MessageUtils;
 
 public class MainCommandContext {
 
-    static final String ADMIN_PERMISSION = MaxProtectionsPermissions.ADMIN;
-    static final String DEBUG_PERMISSION = MaxProtectionsPermissions.ADMIN_DEBUG;
-    static final String LIST_PLACED_PERMISSION = MaxProtectionsPermissions.ADMIN_LIST_PLACED;
-    static final String REPAIR_PERMISSION = MaxProtectionsPermissions.ADMIN_REPAIR;
-    static final String REPORT_PERMISSION = MaxProtectionsPermissions.ADMIN_REPORT;
-    static final String MIGRATE_PERMISSION = MaxProtectionsPermissions.ADMIN_MIGRATE;
-    static final String LOGS_PERMISSION = MaxProtectionsPermissions.ADMIN_LOGS;
+    static final String ADMIN_PERMISSION = ArgosProtectPermissions.ADMIN;
+    static final String DEBUG_PERMISSION = ArgosProtectPermissions.ADMIN_DEBUG;
+    static final String LIST_PLACED_PERMISSION = ArgosProtectPermissions.ADMIN_LIST_PLACED;
+    static final String REPAIR_PERMISSION = ArgosProtectPermissions.ADMIN_REPAIR;
+    static final String REPORT_PERMISSION = ArgosProtectPermissions.ADMIN_REPORT;
+    static final String MIGRATE_PERMISSION = ArgosProtectPermissions.ADMIN_MIGRATE;
+    static final String LOGS_PERMISSION = ArgosProtectPermissions.ADMIN_LOGS;
 
-    private final MaxProtections plugin;
+    private final ArgosProtect plugin;
 
-    public MainCommandContext(MaxProtections plugin) {
+    public MainCommandContext(ArgosProtect plugin) {
         this.plugin = plugin;
     }
 
-    public MaxProtections plugin() {
+    public ArgosProtect plugin() {
         return plugin;
     }
 

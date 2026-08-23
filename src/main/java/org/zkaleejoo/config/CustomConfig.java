@@ -3,7 +3,7 @@ package org.zkaleejoo.config;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.zkaleejoo.MaxProtections;
+import org.zkaleejoo.ArgosProtect;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,14 +13,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 
 public class CustomConfig {
-    private final MaxProtections plugin;
+    private final ArgosProtect plugin;
     private final String fileName;
     private FileConfiguration fileConfiguration = null;
     private File file = null;
     private final String folderName;
     private final boolean newFile;
 
-    public CustomConfig(String fileName, String folderName, MaxProtections plugin, boolean newFile) {
+    public CustomConfig(String fileName, String folderName, ArgosProtect plugin, boolean newFile) {
         this.fileName = fileName;
         this.folderName = folderName;
         this.plugin = plugin;

@@ -19,7 +19,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
-import org.zkaleejoo.MaxProtections;
+import org.zkaleejoo.ArgosProtect;
 import org.zkaleejoo.protection.ProtectionFlagLevel;
 import org.zkaleejoo.protection.ProtectionLimitProfile;
 import org.zkaleejoo.protection.ProtectionRentSettings;
@@ -29,7 +29,7 @@ public class MainConfigManager {
 
     private final CustomConfig configFile;
     private CustomConfig langFile;
-    private final MaxProtections plugin;
+    private final ArgosProtect plugin;
     private final Set<String> registeredLimitPermissions = new LinkedHashSet<>();
 
     // CONFIG
@@ -334,7 +334,7 @@ public class MainConfigManager {
     private String protectionDefaultActionbarEnter;
     private String protectionDefaultActionbarExit;
 
-    public MainConfigManager(MaxProtections plugin) {
+    public MainConfigManager(ArgosProtect plugin) {
         this.plugin = plugin;
         configFile = new CustomConfig("config.yml", null, plugin, false);
         configFile.registerConfig();
@@ -351,7 +351,7 @@ public class MainConfigManager {
         FileConfiguration lang = langFile.getConfig();
 
         // CONFIG
-        prefix = config.getString("general.prefix", "&#27F554&lMaxProtections &8» ");
+        prefix = config.getString("general.prefix", "&#27F554&lArgosProtect &8» ");
         updateCheckEnabled = config.getBoolean("general.update-check", true);
         bStatsEnabled = config.getBoolean("general.bstats", true);
         creationMenuTitle = config.getString("menus.creation.title", "&8Create Warding Stone");
@@ -553,7 +553,7 @@ public class MainConfigManager {
         msgNoPermission = lang.getString("messages.commands.no-permission", "&cYou do not have permission.");
         msgPluginReload = lang.getString("messages.commands.plugin-reload", "&aConfiguration successfully reloaded.");
         msgUsageCommand = lang.getString("messages.commands.usage",
-                "&cUse: /maxprotections <create|reload|lang|debug|listplaced|report|repair|migrate>");
+                "&cUse: /argosprotect <create|reload|lang|debug|listplaced|report|repair|migrate>");
         msgPlayerOnly = lang.getString("messages.commands.player-only",
                 "&cThis command can only be executed by a player.");
         msgLanguageChanged = lang.getString("messages.commands.language-changed",
@@ -577,7 +577,7 @@ public class MainConfigManager {
         adminReportProtectionLines = lang.getStringList("messages.admin.report.protections.lines");
         if (adminReportProtectionLines.isEmpty()) {
             adminReportProtectionLines = List.of(
-                    "&6&lMaxProtections Protection Report",
+                    "&6&lArgosProtect Protection Report",
                     "&eTotal tracked: &f%total%",
                     "&aActive: &f%active%",
                     "&cOrphaned: &f%orphaned%",
@@ -614,7 +614,7 @@ public class MainConfigManager {
                 "&cCould not save protections.db. No in-memory changes were kept.");
         msgAdminRepairReasonRegionIdMismatch = lang.getString(
                 "messages.admin.repair.skip-reasons.region-id-mismatch",
-                "region id does not match a known MaxProtections protection id");
+                "region id does not match a known ArgosProtect protection id");
         msgAdminRepairReasonProtectionYamlInvalid = lang.getString(
                 "messages.admin.repair.skip-reasons.protection-yaml-invalid",
                 "protection YAML is missing or invalid");
@@ -629,8 +629,8 @@ public class MainConfigManager {
         msgAdminMigrateEntry = lang.getString("messages.admin.migrate.entry",
                 "&8- &f%region% &7(%world%) &8%status% &7- %reason%");
         msgAdminMigrateBackupWarning = lang.getString("messages.admin.migrate.backup-warning",
-                "&eBefore apply, back up WorldGuard regions.yml files and MaxProtections protections.db.");
-        adminDebugHeader = lang.getString("messages.admin.debug.header", "&6&lMaxProtections Debug &8- &f%region%");
+                "&eBefore apply, back up WorldGuard regions.yml files and ArgosProtect protections.db.");
+        adminDebugHeader = lang.getString("messages.admin.debug.header", "&6&lArgosProtect Debug &8- &f%region%");
         adminDebugTrackingMissing = lang.getString("messages.admin.debug.tracking-missing",
                 "&eTracking: &cMissing from protections.db");
         adminDebugTrackingPresent = lang.getString("messages.admin.debug.tracking-present",
@@ -1181,7 +1181,7 @@ public class MainConfigManager {
         for (String key : section.getKeys(false)) {
             String path = "limits.groups." + key;
             groups.add(loadLimitProfile(config, path, key,
-                    "maxprotections.limits." + key.toLowerCase(), fallbackPriority++));
+                    "argosprotect.limits." + key.toLowerCase(), fallbackPriority++));
         }
         return groups;
     }

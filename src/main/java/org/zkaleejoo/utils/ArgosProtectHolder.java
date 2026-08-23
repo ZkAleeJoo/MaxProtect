@@ -3,17 +3,17 @@ package org.zkaleejoo.utils;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
-public class MaxProtectionsHolder implements InventoryHolder {
+public class ArgosProtectHolder implements InventoryHolder {
 
     private final String menuId;
     private final String contextId;
 
-    public MaxProtectionsHolder(String menuId) {
+    public ArgosProtectHolder(String menuId) {
         this.menuId = menuId;
         this.contextId = "";
     }
 
-    public MaxProtectionsHolder(String menuId, String contextId) {
+    public ArgosProtectHolder(String menuId, String contextId) {
         this.menuId = menuId;
         this.contextId = contextId == null ? "" : contextId;
     }
