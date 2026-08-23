@@ -53,19 +53,25 @@ public final class ArgosProtect extends JavaPlugin {
         registerListeners();
 
         Bukkit.getConsoleSender().sendMessage(
-                MessageUtils.getColoredMessage("&a&lArgosProtect &8» &aThe plugin was successfully activated"));
-        String[] banner = {
-                "&a    ___                        ____            __          __ ",
-                "&a   /   |  _________ ___  _____/ __ \\_________/ /____  _____/ /_",
-                "&a  / /| | / ___/ __ `/ / / / ___/ /_/ / ___/ __ \\/ _ \\/ ___/ __/",
-                "&a / ___ |/ /  / /_/ / /_/ (__  ) ____/ /  / /_/ /  __/ /__/ /_  ",
-                "&a/_/  |_/_/   \\__, /\\____/____/_/   /_/  \\____/\\___/\\___/\\__/  ",
-                "&a            /____/                                             ",
-                "&7                             v" + getPluginMeta().getVersion()
-        };
-        for (String line : banner) {
-            Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(line));
-        }
+                MessageUtils.getColoredMessage("&a&lArgosProtect &8» &fThe plugin was successfully activated"));
+        Bukkit.getConsoleSender().sendMessage(
+                MessageUtils.getColoredMessage(
+                        "&a&lArgosProtect &8» &a   _____                            __________                __                 __   "));
+        Bukkit.getConsoleSender().sendMessage(
+                MessageUtils.getColoredMessage(
+                        "&a&lArgosProtect &8» &a  /  _  \\_______  ____   ____  _____\\______   \\_______  _____/  |_  ____   _____/  |_ "));
+        Bukkit.getConsoleSender().sendMessage(
+                MessageUtils.getColoredMessage(
+                        "&a&lArgosProtect &8» &a /  /_\\  \\_  __ \\/ ___\\ /  _ \\/  ___/|     ___/\\_  __ \\/  _ \\   __\\/ __ \\_/ ___\\   __\\"));
+        Bukkit.getConsoleSender().sendMessage(
+                MessageUtils.getColoredMessage(
+                        "&a&lArgosProtect &8» &a/    |    \\  | \\/ /_/  >  <_> )___ \\ |    |     |  | \\(  <_> )  | \\  ___/\\  \\___|  |  "));
+        Bukkit.getConsoleSender().sendMessage(
+                MessageUtils.getColoredMessage(
+                        "&a&lArgosProtect &8» &a\\____|__  /__|  \\___  / \\____/____  >|____|     |__|   \\____/|__|  \\___  >\\___  >__|  "));
+        Bukkit.getConsoleSender().sendMessage(
+                MessageUtils.getColoredMessage(
+                        "&a&lArgosProtect &8» &a        \\/     /_____/            \\/                                   \\/     \\/      "));
 
         startUpdateChecks();
     }
@@ -107,7 +113,7 @@ public final class ArgosProtect extends JavaPlugin {
             if (this.getPluginMeta().getVersion().equalsIgnoreCase(version)) {
                 this.latestVersion = null;
                 Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
-                        "&a&lArgosProtect &8» &aA check for updates was performed and nothing was found."));
+                        "&a&lArgosProtect &8» &fA check for updates was performed and nothing was found."));
             } else {
                 this.latestVersion = version;
 
@@ -116,7 +122,7 @@ public final class ArgosProtect extends JavaPlugin {
                                 .getColoredMessage("&a&lArgosProtect &8» &f&lNEW VERSION " + version));
                 Bukkit.getConsoleSender().sendMessage(
                         MessageUtils.getColoredMessage(
-                                "&a&lArgosProtect &8» &fDownload it now at the following link: &7https://pixeleast.com/product/700967-argosprotect"));
+                                "&a&lArgosProtect &8» &fDownload it now at the following link: &7https://modrinth.com/plugin/argosprotect"));
             }
         });
     }
