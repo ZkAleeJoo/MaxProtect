@@ -1,6 +1,6 @@
 # ArgosProtect - Official Wiki
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg) ![Java](https://img.shields.io/badge/Java-21%2B-red.svg) ![PaperMC](https://img.shields.io/badge/Paper--Folia-1.21--26.1.2%2B-green.svg) ![Languages](https://img.shields.io/badge/Languages-EN_|_ES-blue.svg)
+![Version](https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fraw.githubusercontent.com%2FZkAleeJoo%2FArgosProtect%2Fmain%2Fpom.xml&query=%2F%2A%5Blocal-name%28%29%3D%27project%27%5D%2F%2A%5Blocal-name%28%29%3D%27version%27%5D&label=version&color=blue) ![Java](https://img.shields.io/badge/Java-21%2B-red.svg) ![PaperMC](https://img.shields.io/badge/Paper--Folia-1.21--26.1.2%2B-green.svg) ![Languages](https://img.shields.io/badge/Languages-EN_|_ES-blue.svg)
 
 Welcome to the official **ArgosProtect** documentation. Here you will find everything you need to install, configure, and manage protections on your Minecraft server efficiently.
 
