@@ -8,7 +8,7 @@ Welcome to the official **ArgosProtect** documentation. Here you will find every
 
 </div>
 
-## 📑 Table of Contents
+## Table of Contents
 
 1. [Main Features](#1-main-features)
 2. [Installation Guide](#2-installation-guide)
