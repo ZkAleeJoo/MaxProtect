@@ -56,7 +56,7 @@ public final class ProtectionStonesMigrationYamlSupport {
         yaml.set("price", 0.0D);
         yaml.set("price-rent", 0.0D);
 
-        yaml.set("worldguard.region-id-format", "mp_%id%_%compact%");
+        yaml.set("worldguard.region-id-format", "ap_%id%_%compact%");
         yaml.set("worldguard.flags.pvp", "DENY");
         yaml.set("worldguard.flags.mob-damage", "ALLOW");
         yaml.set("worldguard.flags.damage-animals", "ALLOW");
