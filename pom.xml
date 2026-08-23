@@ -84,7 +84,7 @@
 
 
     <build>
-        <finalName>ArgosProtect-${project.version}</finalName>
+        <finalName>ArgosProtect-${project.version}</finalName> 
 
         <resources>
             <resource>
