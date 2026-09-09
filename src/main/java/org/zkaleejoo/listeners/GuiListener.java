@@ -9,16 +9,16 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
-import org.zkaleejoo.ArgosProtect;
-import org.zkaleejoo.utils.ArgosProtectHolder;
+import org.zkaleejoo.MaxProtect;
+import org.zkaleejoo.utils.MaxProtectHolder;
 import org.zkaleejoo.utils.MessageUtils;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 
 public class GuiListener implements Listener {
-    private final ArgosProtect plugin;
+    private final MaxProtect plugin;
 
-    public GuiListener(ArgosProtect plugin) {
+    public GuiListener(MaxProtect plugin) {
         this.plugin = plugin;
     }
 
@@ -29,11 +29,11 @@ public class GuiListener implements Listener {
         if (event.getInventory().getHolder() == null)
             return;
 
-        if (event.getInventory().getHolder() instanceof ArgosProtectHolder) {
+        if (event.getInventory().getHolder() instanceof MaxProtectHolder) {
 
             event.setCancelled(true);
 
-            ArgosProtectHolder holder = (ArgosProtectHolder) event.getInventory().getHolder();
+            MaxProtectHolder holder = (MaxProtectHolder) event.getInventory().getHolder();
             String menuId = holder.getMenuId();
 
             if (menuId.equals("CREATION_MENU")) {
@@ -152,7 +152,7 @@ public class GuiListener implements Listener {
 
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
-        if (event.getInventory().getHolder() instanceof ArgosProtectHolder) {
+        if (event.getInventory().getHolder() instanceof MaxProtectHolder) {
             event.setCancelled(true);
         }
     }
@@ -162,7 +162,7 @@ public class GuiListener implements Listener {
         if (!(event.getPlayer() instanceof Player player)) {
             return;
         }
-        if (!(event.getInventory().getHolder() instanceof ArgosProtectHolder holder)) {
+        if (!(event.getInventory().getHolder() instanceof MaxProtectHolder holder)) {
             return;
         }
         if (!holder.getMenuId().equals("CREATION_MENU")) {

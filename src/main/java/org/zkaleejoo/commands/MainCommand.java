@@ -6,7 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.zkaleejoo.ArgosProtect;
+import org.zkaleejoo.MaxProtect;
 import org.zkaleejoo.commands.core.CommandDispatcher;
 import org.zkaleejoo.commands.main.CreateSubCommand;
 import org.zkaleejoo.commands.main.DebugSubCommand;
@@ -22,10 +22,10 @@ import org.zkaleejoo.utils.MessageUtils;
 
 public class MainCommand implements CommandExecutor, TabCompleter {
 
-    private final ArgosProtect plugin;
+    private final MaxProtect plugin;
     private final CommandDispatcher dispatcher;
 
-    public MainCommand(ArgosProtect plugin) {
+    public MainCommand(MaxProtect plugin) {
         this.plugin = plugin;
         MainCommandContext context = new MainCommandContext(plugin);
         this.dispatcher = new CommandDispatcher(List.of(

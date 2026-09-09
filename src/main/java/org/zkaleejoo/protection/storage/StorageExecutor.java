@@ -20,7 +20,7 @@ public final class StorageExecutor {
         this.logger = logger;
         AtomicInteger counter = new AtomicInteger(1);
         this.executor = Executors.newFixedThreadPool(POOL_SIZE, runnable -> {
-            Thread thread = new Thread(runnable, "argosprotect-db-" + counter.getAndIncrement());
+            Thread thread = new Thread(runnable, "maxprotect-db-" + counter.getAndIncrement());
             thread.setDaemon(true);
             return thread;
         });

@@ -9,7 +9,7 @@
 
 general:
   language: "es"
-  prefix: "&#27F554&lArgosProtect &8» "
+  prefix: "&#27F554&lMaxProtect &8» "
   update-check: true
   bstats: true
 
@@ -105,14 +105,14 @@ limits:
   # Puedes agregar todos los grupos que quieras. Se usara el grupo con permiso y mayor prioridad.
   groups:
     vip:
-      permission: "argosprotect.limits.vip"
+      permission: "maxprotect.limits.vip"
       priority: 10
       max-protections: 10
       max-radius: 50
       min-price: 0
       max-price: 250000
     mvp:
-      permission: "argosprotect.limits.mvp"
+      permission: "maxprotect.limits.mvp"
       priority: 20
       max-protections: 20
       max-radius: 75

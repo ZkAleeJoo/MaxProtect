@@ -22,9 +22,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.zkaleejoo.protection.ProtectionFlagLevel;
-import org.zkaleejoo.ArgosProtect;
+import org.zkaleejoo.MaxProtect;
 import org.zkaleejoo.config.MainConfigManager.MenuItemConfig;
-import org.zkaleejoo.permissions.ArgosProtectPermissions;
+import org.zkaleejoo.permissions.MaxProtectPermissions;
 import org.zkaleejoo.protection.ProtectionFlagDefinition;
 import org.zkaleejoo.utils.MessageUtils;
 
@@ -37,10 +37,10 @@ public class ProtectionFlagListener implements Listener {
 
     private static final long DENIED_MESSAGE_COOLDOWN_MS = 1200L;
 
-    private final ArgosProtect plugin;
+    private final MaxProtect plugin;
     private final Map<UUID, Long> deniedMessageCooldowns = new HashMap<>();
 
-    public ProtectionFlagListener(ArgosProtect plugin) {
+    public ProtectionFlagListener(MaxProtect plugin) {
         this.plugin = plugin;
     }
 
@@ -97,7 +97,7 @@ public class ProtectionFlagListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
-        if (event.getPlayer().hasPermission(ArgosProtectPermissions.PROTECTION_REMOVE_OTHERS)
+        if (event.getPlayer().hasPermission(MaxProtectPermissions.PROTECTION_REMOVE_OTHERS)
                 && plugin.getProtectionRegionManager().isProtectionStone(event.getBlock())) {
             return;
         }

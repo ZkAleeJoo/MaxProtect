@@ -25,8 +25,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import org.zkaleejoo.ArgosProtect;
-import org.zkaleejoo.permissions.ArgosProtectPermissions;
+import org.zkaleejoo.MaxProtect;
+import org.zkaleejoo.permissions.MaxProtectPermissions;
 import org.zkaleejoo.protection.ProtectionCommandSupport;
 import org.zkaleejoo.protection.ProtectionLimitProfile;
 import org.zkaleejoo.protection.ProtectionRegionManager.InviteCreateResult;
@@ -39,24 +39,24 @@ import org.zkaleejoo.utils.MessageUtils;
 
 public class ProtectionCommandContext {
 
-    static final String PROTECTION_PERMISSION = ArgosProtectPermissions.PROTECTION;
-    static final String GIVE_PERMISSION = ArgosProtectPermissions.PROTECTION_GIVE;
-    static final String BUY_PERMISSION = ArgosProtectPermissions.PROTECTION_BUY;
+    static final String PROTECTION_PERMISSION = MaxProtectPermissions.PROTECTION;
+    static final String GIVE_PERMISSION = MaxProtectPermissions.PROTECTION_GIVE;
+    static final String BUY_PERMISSION = MaxProtectPermissions.PROTECTION_BUY;
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
             .withZone(ZoneId.systemDefault());
 
-    private final ArgosProtect plugin;
+    private final MaxProtect plugin;
     private final NamespacedKey protectionIdKey;
     private final NamespacedKey protectionRadiusKey;
 
-    public ProtectionCommandContext(ArgosProtect plugin) {
+    public ProtectionCommandContext(MaxProtect plugin) {
         this.plugin = plugin;
         this.protectionIdKey = new NamespacedKey(plugin, "protection_id");
         this.protectionRadiusKey = new NamespacedKey(plugin, "protection_radius");
     }
 
-    public ArgosProtect plugin() {
+    public MaxProtect plugin() {
         return plugin;
     }
 

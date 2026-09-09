@@ -5,7 +5,7 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.zkaleejoo.commands.core.PluginSubCommand;
-import org.zkaleejoo.permissions.ArgosProtectPermissions;
+import org.zkaleejoo.permissions.MaxProtectPermissions;
 import org.zkaleejoo.protection.ProtectionRegionManager.ProtectionFlightResult;
 
 public class FlySubCommand implements PluginSubCommand {
@@ -23,7 +23,7 @@ public class FlySubCommand implements PluginSubCommand {
 
     @Override
     public boolean canUse(CommandSender sender) {
-        return sender.hasPermission(ArgosProtectPermissions.PROTECTION_FLY);
+        return sender.hasPermission(MaxProtectPermissions.PROTECTION_FLY);
     }
 
     @Override

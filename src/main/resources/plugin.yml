@@ -1,6 +1,6 @@
-name: ArgosProtect
+name: MaxProtect
 version: ${project.version}
-main: org.zkaleejoo.ArgosProtect
+main: org.zkaleejoo.MaxProtect
 api-version: '1.21'
 folia-supported: true
 authors: [ ZkAleeJoo ]
@@ -9,63 +9,63 @@ depend: [WorldGuard]
 softdepend: [Vault, ProtectionStones]
 
 commands:
-  argosprotect:
-    description: Main ArgosProtect command
-    aliases: [ap]
+  maxprotect:
+    description: Main MaxProtect command
+    aliases: [mp]
   protection:
     description: Protection stone command
     aliases: [p]
 
 permissions:
-  argosprotect.admin:
-    description: Full access to ArgosProtect and administrative commands.
+  maxprotect.admin:
+    description: Full access to MaxProtect and administrative commands.
     default: op
     children:
-      argosprotect.admin.debug: true
-      argosprotect.admin.listplaced: true
-      argosprotect.admin.repair: true
-      argosprotect.admin.report: true
-      argosprotect.admin.logs: true
-      argosprotect.admin.migrate: true
-      argosprotect.protection: true
-      argosprotect.protection.give: true
-      argosprotect.protection.buy: true
-      argosprotect.protection.fly: true
-      argosprotect.protection.remove.others: true
-      argosprotect.flags: true
-  argosprotect.admin.debug:
+      maxprotect.admin.debug: true
+      maxprotect.admin.listplaced: true
+      maxprotect.admin.repair: true
+      maxprotect.admin.report: true
+      maxprotect.admin.logs: true
+      maxprotect.admin.migrate: true
+      maxprotect.protection: true
+      maxprotect.protection.give: true
+      maxprotect.protection.buy: true
+      maxprotect.protection.fly: true
+      maxprotect.protection.remove.others: true
+      maxprotect.flags: true
+  maxprotect.admin.debug:
     description: Allows inspecting placed protection tracking and WorldGuard data.
     default: op
-  argosprotect.admin.listplaced:
+  maxprotect.admin.listplaced:
     description: Allows opening the admin placed protections menu.
     default: op
-  argosprotect.admin.repair:
+  maxprotect.admin.repair:
     description: Allows repairing and safely cleaning placed protection tracking.
     default: op
-  argosprotect.admin.report:
+  maxprotect.admin.report:
     description: Allows viewing protection database reports.
     default: op
-  argosprotect.admin.logs:
+  maxprotect.admin.logs:
     description: Allows viewing recent event logs for any placed protection.
     default: op
-  argosprotect.admin.migrate:
+  maxprotect.admin.migrate:
     description: Allows previewing and applying supported protection plugin migrations.
     default: op
-  argosprotect.protection:
+  maxprotect.protection:
     description: Allows using player protection commands such as paying rent.
     default: true
-  argosprotect.protection.give:
+  maxprotect.protection.give:
     description: Allows giving protection stones to players.
     default: op
-  argosprotect.protection.buy:
+  maxprotect.protection.buy:
     description: Allows buying protection stones.
     default: true
-  argosprotect.protection.fly:
+  maxprotect.protection.fly:
     description: Allows toggling flight inside accessible protections.
     default: op
-  argosprotect.protection.remove.others:
+  maxprotect.protection.remove.others:
     description: Allows removing protection stones owned by other players.
     default: op
-  argosprotect.flags:
+  maxprotect.flags:
     description: Allows owners to modify protection flags from the settings menu.
     default: true

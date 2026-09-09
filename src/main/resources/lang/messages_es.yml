@@ -4,7 +4,7 @@
 #/    |    \  | \/ /_/  >  <_> )___ \ |    |     |  | \(  <_> )  | \  ___/\  \___ 
 #\____|__  /__|  \___  / \____/____  >|____|     |__|   \____/|__|  \___  >\___  >
 #        \/     /_____/            \/                                   \/     \/ 
-# ArgosProtect - Mensajes ES
+# MaxProtect - Mensajes ES
 messages:
   update-available: "&f&lNUEVA VERSIÓN: &7{version}"
   update-current: "&7Tu versión actual: &c{version}"
@@ -12,7 +12,7 @@ messages:
   commands:
     no-permission: "&#FF4D4D&l✖ &cNo tienes permiso para usar este comando."
     plugin-reload: "&#7CFF6B&l✔ &#B8FFB0La configuración y los mensajes se recargaron correctamente."
-    usage: "&#FFE259&l✦ &7Uso: &#FFA751/argosprotect <create | reload | lang | debug | listplaced | report | logs | repair | migrate>"
+    usage: "&#FFE259&l✦ &7Uso: &#FFA751/maxprotect <create | reload | lang | debug | listplaced | report | logs | repair | migrate>"
     player-only: "&#FF4D4D&l✖ &cEste comando solo puede ser ejecutado por un jugador."
     language-changed: "&#7CFF6B&l✔ &#B8FFB0Idioma cambiado a &f%language%&#B8FFB0. Recarga completada."
     language-file-missing: "&#FF4D4D&l✖ &cNo se encontró el archivo de idioma en extra_lang: &f%file%"
@@ -21,9 +21,9 @@ messages:
       es: "Español"
   admin:
     debug:
-      usage: "&#FF4D4D&lX &cUso: /ap debug <region>"
+      usage: "&#FF4D4D&lX &cUso: /mp debug <region>"
       not-found: "&#FF4D4D&lX &cNo se encontró ninguna protección colocada ni región de WorldGuard para &f%lookup%&c."
-      header: "&#FFE259&lDepuración de ArgosProtect &8- &f%region%"
+      header: "&#FFE259&lDepuración de MaxProtect &8- &f%region%"
       tracking-missing: "&#FFB84DRastreo: &#FF5555No existe en protections.db"
       tracking-present: "&#FFB84DRastreo: &#55FF55Existe en protections.db"
       protection-yaml: "&#FFB84DYAML de protección: %state% &7(%protection_id%.yml)"
@@ -45,12 +45,12 @@ messages:
         ok: "&#55FF55✔"
         missing: "&#FF5555Faltante"
     listplaced:
-      usage: "&#FF4D4D&lX &cUso: /ap listplaced"
+      usage: "&#FF4D4D&lX &cUso: /mp listplaced"
     report:
-      usage: "&#FF4D4D&lX &cUso: /ap report protections"
+      usage: "&#FF4D4D&lX &cUso: /mp report protections"
       protections:
         lines:
-          - "&#FFE259&lReporte de Protecciones de ArgosProtect"
+          - "&#FFE259&lReporte de Protecciones de MaxProtect"
           - "&#55FF55Activas: &f%active% &8| &#FFB84DHuérfanas: &f%orphaned% &8| &#55C7FFTotal: &f%total%"
           - "&#C66BFFEventos registrados: &f%events%"
           - "&#FFA751Regiones más grandes:"
@@ -61,30 +61,30 @@ messages:
         largest-entry: "&8%index%. &f%name% &7(%blocks% bloques, %owner%)"
         top-owner-entry: "&8%index%. &f%owner% &7(%count%)"
     logs:
-      usage: "&#FF4D4D&lX &cUso: /ap logs <region o alias>"
+      usage: "&#FF4D4D&lX &cUso: /mp logs <region o alias>"
       empty: "&#FFB84D&l! &#FFF3B0No se encontraron eventos para &f%alias%&#FFF3B0."
       header: "&#FFE259&lEventos recientes de &f%alias% &7(%region%)"
       entry: "&8- &7%date% &f%type% &8| &e%actor% &7-> &b%target% &8| &7%detail%"
     repair:
-      usage: "&#FF4D4D&lX &cUso: /ap repair [cleanup]"
+      usage: "&#FF4D4D&lX &cUso: /mp repair [cleanup]"
       summary: "&#FFE259Resumen de reparación: &#55FF55%repaired% reparadas&7, &#55C7FF%cleaned% limpiadas&7, &#FFF3B0%skipped% omitidas&7."
       save-error: "&#FF4D4D&lX &cNo se pudo guardar la reparación."
       skipped-world-unavailable: "&#FFB84DOmitida &f%region% &7(mundo no disponible)."
       cleaned-stale-tracker: "&#55FF55Entrada de rastreo obsoleta limpiada &f%region%&#55FF55."
-      orphan-tracker: "&#FFB84DRastreo huérfano encontrado: &f%region% &7(ejecuta /ap repair cleanup para eliminarlo)."
+      orphan-tracker: "&#FFB84DRastreo huérfano encontrado: &f%region% &7(ejecuta /mp repair cleanup para eliminarlo)."
       skipped-worldguard-region: "&#FFB84DRegión WG omitida &f%region% &7(%reason%)."
       repaired-worldguard-region: "&#55FF55Rastreo reparado para la región WG &f%region%&#55FF55."
       save-rollback: "&#FF4D4DNo se pudo guardar protections.db. No se conservaron cambios en memoria."
       skip-reasons:
-        region-id-mismatch: "el ID de la región no coincide con un ID de protección conocido de ArgosProtect"
+        region-id-mismatch: "el ID de la región no coincide con un ID de protección conocido de MaxProtect"
         protection-yaml-invalid: "el YAML de la protección falta o no es válido"
         no-owner: "la región de WorldGuard no tiene propietario UUID"
         stone-not-found: "no se pudo identificar de forma segura un bloque de protección único en el centro de la región"
     migrate:
-      usage: "&#FF4D4D&lX &cUso: /ap migrate protectionstones <preview|apply>"
+      usage: "&#FF4D4D&lX &cUso: /mp migrate protectionstones <preview|apply>"
       summary: "&#FFE259Resumen de migración: &#55FF55%imported% importadas&7, &#55C7FF%importable% importables&7, &#FFF3B0%warnings% avisos&7, &#FFB84D%skipped% omitidas&7, &#C66BFF%already% ya rastreadas&7, &#FF4D4D%failed% fallidas&7."
       entry: "&8- &f%region% &7(%world%) &8%status% &7- %reason%"
-      backup-warning: "&#FFB84DHaz backup de los regions.yml de WorldGuard y de plugins/ArgosProtect/protections.db antes de usar apply."
+      backup-warning: "&#FFB84DHaz backup de los regions.yml de WorldGuard y de plugins/MaxProtect/protections.db antes de usar apply."
   creation:
     prompts:
       protection-id: "&#FFE259&l✎ &#FFF3B0Escribe el ID de la protección en el chat. &7Usa &fcancel &7para volver."

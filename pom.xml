@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.zkaleejoo</groupId>
-    <artifactId>ArgosProtect</artifactId>
+    <artifactId>MaxProtect</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>ArgosProtect</name>
+    <name>MaxProtect</name>
 
     <properties>
         <java.version>21</java.version>
@@ -84,7 +84,7 @@
 
 
     <build>
-        <finalName>ArgosProtect-${project.version}</finalName> 
+        <finalName>MaxProtect-${project.version}</finalName> 
 
         <resources>
             <resource>

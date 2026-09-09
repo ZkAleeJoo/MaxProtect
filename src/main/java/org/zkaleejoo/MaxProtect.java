@@ -15,9 +15,9 @@ import org.zkaleejoo.utils.UpdateChecker;
 
 import net.milkbowl.vault.economy.Economy;
 
-public final class ArgosProtect extends JavaPlugin {
+public final class MaxProtect extends JavaPlugin {
 
-    public static final String UPDATE_DOWNLOAD_URL = "https://modrinth.com/plugin/argosprotect";
+    public static final String UPDATE_DOWNLOAD_URL = "https://modrinth.com/plugin/maxprotect";
     private static final long UPDATE_CHECK_INTERVAL_TICKS = 20L * 60L * 60L * 5L;
     private static final int BSTATS_PLUGIN_ID = 33606;
 
@@ -53,25 +53,25 @@ public final class ArgosProtect extends JavaPlugin {
         registerListeners();
 
         Bukkit.getConsoleSender().sendMessage(
-                MessageUtils.getColoredMessage("&a&lArgosProtect &8» &fThe plugin was successfully activated"));
+                MessageUtils.getColoredMessage("&a&lMaxProtect &8» &fThe plugin was successfully activated"));
         Bukkit.getConsoleSender().sendMessage(
                 MessageUtils.getColoredMessage(
-                        "&a&lArgosProtect &8» &a   _____                            __________                __                 __   "));
+                        "&a&lMaxProtect &8» &a   _____                            __________                __                 __   "));
         Bukkit.getConsoleSender().sendMessage(
                 MessageUtils.getColoredMessage(
-                        "&a&lArgosProtect &8» &a  /  _  \\_______  ____   ____  _____\\______   \\_______  _____/  |_  ____   _____/  |_ "));
+                        "&a&lMaxProtect &8» &a  /  _  \\_______  ____   ____  _____\\______   \\_______  _____/  |_  ____   _____/  |_ "));
         Bukkit.getConsoleSender().sendMessage(
                 MessageUtils.getColoredMessage(
-                        "&a&lArgosProtect &8» &a /  /_\\  \\_  __ \\/ ___\\ /  _ \\/  ___/|     ___/\\_  __ \\/  _ \\   __\\/ __ \\_/ ___\\   __\\"));
+                        "&a&lMaxProtect &8» &a /  /_\\  \\_  __ \\/ ___\\ /  _ \\/  ___/|     ___/\\_  __ \\/  _ \\   __\\/ __ \\_/ ___\\   __\\"));
         Bukkit.getConsoleSender().sendMessage(
                 MessageUtils.getColoredMessage(
-                        "&a&lArgosProtect &8» &a/    |    \\  | \\/ /_/  >  <_> )___ \\ |    |     |  | \\(  <_> )  | \\  ___/\\  \\___|  |  "));
+                        "&a&lMaxProtect &8» &a/    |    \\  | \\/ /_/  >  <_> )___ \\ |    |     |  | \\(  <_> )  | \\  ___/\\  \\___|  |  "));
         Bukkit.getConsoleSender().sendMessage(
                 MessageUtils.getColoredMessage(
-                        "&a&lArgosProtect &8» &a\\____|__  /__|  \\___  / \\____/____  >|____|     |__|   \\____/|__|  \\___  >\\___  >__|  "));
+                        "&a&lMaxProtect &8» &a\\____|__  /__|  \\___  / \\____/____  >|____|     |__|   \\____/|__|  \\___  >\\___  >__|  "));
         Bukkit.getConsoleSender().sendMessage(
                 MessageUtils.getColoredMessage(
-                        "&a&lArgosProtect &8» &a        \\/     /_____/            \\/                                   \\/     \\/      "));
+                        "&a&lMaxProtect &8» &a        \\/     /_____/            \\/                                   \\/     \\/      "));
 
         startUpdateChecks();
     }
@@ -87,7 +87,7 @@ public final class ArgosProtect extends JavaPlugin {
         }
         Bukkit.getConsoleSender().sendMessage(
                 MessageUtils
-                        .getColoredMessage("&a&lArgosProtect &8» &cThe plugin was successfully desactivated"));
+                        .getColoredMessage("&a&lMaxProtect &8» &cThe plugin was successfully desactivated"));
     }
 
     private void startUpdateChecks() {
@@ -113,16 +113,16 @@ public final class ArgosProtect extends JavaPlugin {
             if (this.getPluginMeta().getVersion().equalsIgnoreCase(version)) {
                 this.latestVersion = null;
                 Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
-                        "&a&lArgosProtect &8» &fA check for updates was performed and nothing was found."));
+                        "&a&lMaxProtect &8» &fA check for updates was performed and nothing was found."));
             } else {
                 this.latestVersion = version;
 
                 Bukkit.getConsoleSender()
                         .sendMessage(MessageUtils
-                                .getColoredMessage("&a&lArgosProtect &8» &f&lNEW VERSION " + version));
+                                .getColoredMessage("&a&lMaxProtect &8» &f&lNEW VERSION " + version));
                 Bukkit.getConsoleSender().sendMessage(
                         MessageUtils.getColoredMessage(
-                                "&a&lArgosProtect &8» &fDownload it now at the following link: &7https://modrinth.com/plugin/argosprotect"));
+                                "&a&lMaxProtect &8» &fDownload it now at the following link: &7https://modrinth.com/plugin/maxprotect"));
             }
         });
     }
@@ -131,7 +131,7 @@ public final class ArgosProtect extends JavaPlugin {
     private void registerCommands() {
         MainCommand mainCommand = new MainCommand(this);
         ProtectionCommand protectionCommand = new ProtectionCommand(this);
-        registerCommand("argosprotect", mainCommand, mainCommand);
+        registerCommand("maxprotect", mainCommand, mainCommand);
         registerCommand("protection", protectionCommand, protectionCommand);
     }
 

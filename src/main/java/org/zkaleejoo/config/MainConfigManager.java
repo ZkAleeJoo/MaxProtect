@@ -19,7 +19,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
-import org.zkaleejoo.ArgosProtect;
+import org.zkaleejoo.MaxProtect;
 import org.zkaleejoo.protection.ProtectionFlagLevel;
 import org.zkaleejoo.protection.ProtectionLimitProfile;
 import org.zkaleejoo.protection.ProtectionRentSettings;
@@ -29,7 +29,7 @@ public class MainConfigManager {
 
     private final CustomConfig configFile;
     private CustomConfig langFile;
-    private final ArgosProtect plugin;
+    private final MaxProtect plugin;
     private final Set<String> registeredLimitPermissions = new LinkedHashSet<>();
 
     // CONFIG
@@ -322,7 +322,7 @@ public class MainConfigManager {
     private String protectionEventInviteDenied;
     private String protectionEventOwnerTransferred;
     private String msgProtectionMemberRemovedTeleported;
-    private String msgProtectionLimitMaxProtections;
+    private String msgProtectionLimitMaxProtect;
     private String msgProtectionLimitRadius;
     private String msgProtectionLimitPrice;
     private String msgProtectionHomeSet;
@@ -334,7 +334,7 @@ public class MainConfigManager {
     private String protectionDefaultActionbarEnter;
     private String protectionDefaultActionbarExit;
 
-    public MainConfigManager(ArgosProtect plugin) {
+    public MainConfigManager(MaxProtect plugin) {
         this.plugin = plugin;
         configFile = new CustomConfig("config.yml", null, plugin, false);
         configFile.registerConfig();
@@ -351,7 +351,7 @@ public class MainConfigManager {
         FileConfiguration lang = langFile.getConfig();
 
         // CONFIG
-        prefix = config.getString("general.prefix", "&#27F554&lArgosProtect &8» ");
+        prefix = config.getString("general.prefix", "&#27F554&lMaxProtect &8» ");
         updateCheckEnabled = config.getBoolean("general.update-check", true);
         bStatsEnabled = config.getBoolean("general.bstats", true);
         creationMenuTitle = config.getString("menus.creation.title", "&8Create Warding Stone");
@@ -553,7 +553,7 @@ public class MainConfigManager {
         msgNoPermission = lang.getString("messages.commands.no-permission", "&cYou do not have permission.");
         msgPluginReload = lang.getString("messages.commands.plugin-reload", "&aConfiguration successfully reloaded.");
         msgUsageCommand = lang.getString("messages.commands.usage",
-                "&cUse: /argosprotect <create|reload|lang|debug|listplaced|report|repair|migrate>");
+                "&cUse: /maxprotect <create|reload|lang|debug|listplaced|report|repair|migrate>");
         msgPlayerOnly = lang.getString("messages.commands.player-only",
                 "&cThis command can only be executed by a player.");
         msgLanguageChanged = lang.getString("messages.commands.language-changed",
@@ -562,12 +562,12 @@ public class MainConfigManager {
                 "&cCould not find language config: &f%file%&c.");
         msgLanguageNameEnglish = lang.getString("messages.commands.language-names.en", "English");
         msgLanguageNameSpanish = lang.getString("messages.commands.language-names.es", "Spanish");
-        msgAdminDebugUsage = lang.getString("messages.admin.debug.usage", "&cUsage: /ap debug <region>");
+        msgAdminDebugUsage = lang.getString("messages.admin.debug.usage", "&cUsage: /mp debug <region>");
         msgAdminDebugNotFound = lang.getString("messages.admin.debug.not-found",
                 "&cNo placed protection or WorldGuard region was found for &f%lookup%&c.");
-        msgAdminListPlacedUsage = lang.getString("messages.admin.listplaced.usage", "&cUsage: /ap listplaced");
-        msgAdminReportUsage = lang.getString("messages.admin.report.usage", "&cUsage: /ap report protections");
-        msgAdminLogsUsage = lang.getString("messages.admin.logs.usage", "&cUsage: /ap logs <region|alias>");
+        msgAdminListPlacedUsage = lang.getString("messages.admin.listplaced.usage", "&cUsage: /mp listplaced");
+        msgAdminReportUsage = lang.getString("messages.admin.report.usage", "&cUsage: /mp report protections");
+        msgAdminLogsUsage = lang.getString("messages.admin.logs.usage", "&cUsage: /mp logs <region|alias>");
         msgAdminLogsEmpty = lang.getString("messages.admin.logs.empty",
                 "&eNo protection events were found for &f%alias%&e.");
         msgAdminLogsHeader = lang.getString("messages.admin.logs.header",
@@ -577,7 +577,7 @@ public class MainConfigManager {
         adminReportProtectionLines = lang.getStringList("messages.admin.report.protections.lines");
         if (adminReportProtectionLines.isEmpty()) {
             adminReportProtectionLines = List.of(
-                    "&6&lArgosProtect Protection Report",
+                    "&6&lMaxProtect Protection Report",
                     "&eTotal tracked: &f%total%",
                     "&aActive: &f%active%",
                     "&cOrphaned: &f%orphaned%",
@@ -591,7 +591,7 @@ public class MainConfigManager {
                 "&8%index%. &f%name% &7(%blocks% blocks, %owner%)");
         adminReportProtectionTopOwnerEntry = lang.getString("messages.admin.report.protections.top-owner-entry",
                 "&8%index%. &f%owner% &7(%count%)");
-        msgAdminRepairUsage = lang.getString("messages.admin.repair.usage", "&cUsage: /ap repair [cleanup]");
+        msgAdminRepairUsage = lang.getString("messages.admin.repair.usage", "&cUsage: /mp repair [cleanup]");
         msgAdminRepairSummary = lang.getString("messages.admin.repair.summary",
                 "&6Repair summary: &a%repaired% repaired&7, &b%cleaned% cleaned&7, &e%skipped% skipped&7.");
         msgAdminRepairSaveError = lang.getString("messages.admin.repair.save-error",
@@ -603,7 +603,7 @@ public class MainConfigManager {
                 "messages.admin.repair.cleaned-stale-tracker",
                 "&aCleaned stale tracker entry &f%region%&a.");
         msgAdminRepairOrphanTracker = lang.getString("messages.admin.repair.orphan-tracker",
-                "&eOrphan tracker found: &f%region% &7(run /ap repair cleanup to remove it).");
+                "&eOrphan tracker found: &f%region% &7(run /mp repair cleanup to remove it).");
         msgAdminRepairSkippedWorldGuardRegion = lang.getString(
                 "messages.admin.repair.skipped-worldguard-region",
                 "&eSkipped WG region &f%region% &7(%reason%).");
@@ -614,7 +614,7 @@ public class MainConfigManager {
                 "&cCould not save protections.db. No in-memory changes were kept.");
         msgAdminRepairReasonRegionIdMismatch = lang.getString(
                 "messages.admin.repair.skip-reasons.region-id-mismatch",
-                "region id does not match a known ArgosProtect protection id");
+                "region id does not match a known MaxProtect protection id");
         msgAdminRepairReasonProtectionYamlInvalid = lang.getString(
                 "messages.admin.repair.skip-reasons.protection-yaml-invalid",
                 "protection YAML is missing or invalid");
@@ -623,14 +623,14 @@ public class MainConfigManager {
         msgAdminRepairReasonStoneNotFound = lang.getString("messages.admin.repair.skip-reasons.stone-not-found",
                 "could not safely identify a unique protection stone at the region center");
         msgAdminMigrateUsage = lang.getString("messages.admin.migrate.usage",
-                "&cUsage: /ap migrate protectionstones <preview|apply>");
+                "&cUsage: /mp migrate protectionstones <preview|apply>");
         msgAdminMigrateSummary = lang.getString("messages.admin.migrate.summary",
                 "&6Migration summary: &a%imported% imported&7, &b%importable% importable&7, &e%warnings% warnings&7, &c%skipped% skipped&7, &d%already% already tracked&7, &4%failed% failed&7.");
         msgAdminMigrateEntry = lang.getString("messages.admin.migrate.entry",
                 "&8- &f%region% &7(%world%) &8%status% &7- %reason%");
         msgAdminMigrateBackupWarning = lang.getString("messages.admin.migrate.backup-warning",
-                "&eBefore apply, back up WorldGuard regions.yml files and ArgosProtect protections.db.");
-        adminDebugHeader = lang.getString("messages.admin.debug.header", "&6&lArgosProtect Debug &8- &f%region%");
+                "&eBefore apply, back up WorldGuard regions.yml files and MaxProtect protections.db.");
+        adminDebugHeader = lang.getString("messages.admin.debug.header", "&6&lMaxProtect Debug &8- &f%region%");
         adminDebugTrackingMissing = lang.getString("messages.admin.debug.tracking-missing",
                 "&eTracking: &cMissing from protections.db");
         adminDebugTrackingPresent = lang.getString("messages.admin.debug.tracking-present",
@@ -914,7 +914,7 @@ public class MainConfigManager {
                 "Ownership transferred from %old_owner% to %new_owner%");
         msgProtectionMemberRemovedTeleported = lang.getString("messages.protection.member-removed-teleported",
                 "&eYou were removed from &f%alias% &eand moved outside.");
-        msgProtectionLimitMaxProtections = lang.getString("messages.protection.limits.max-protections",
+        msgProtectionLimitMaxProtect = lang.getString("messages.protection.limits.max-protections",
                 "&cYou reached your protection limit: &f%current%/%max%&c.");
         msgProtectionLimitRadius = lang.getString("messages.protection.limits.radius",
                 "&cYour limit only allows radius up to &f%max_radius%&c. This protection uses &f%radius%&c.");
@@ -1181,7 +1181,7 @@ public class MainConfigManager {
         for (String key : section.getKeys(false)) {
             String path = "limits.groups." + key;
             groups.add(loadLimitProfile(config, path, key,
-                    "argosprotect.limits." + key.toLowerCase(), fallbackPriority++));
+                    "maxprotect.limits." + key.toLowerCase(), fallbackPriority++));
         }
         return groups;
     }
@@ -2444,8 +2444,8 @@ public class MainConfigManager {
         return msgProtectionMemberRemovedTeleported;
     }
 
-    public String getMsgProtectionLimitMaxProtections() {
-        return msgProtectionLimitMaxProtections;
+    public String getMsgProtectionLimitMaxProtect() {
+        return msgProtectionLimitMaxProtect;
     }
 
     public String getMsgProtectionLimitRadius() {

@@ -11,18 +11,18 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.event.inventory.ClickType;
-import org.zkaleejoo.ArgosProtect;
+import org.zkaleejoo.MaxProtect;
 import org.zkaleejoo.config.MainConfigManager.MenuDisplayConfig;
 import org.zkaleejoo.config.MainConfigManager.MenuItemConfig;
 import org.zkaleejoo.config.MainConfigManager.MenuNavigationConfig;
-import org.zkaleejoo.permissions.ArgosProtectPermissions;
+import org.zkaleejoo.permissions.MaxProtectPermissions;
 import org.zkaleejoo.protection.ProtectionRegionManager.ProtectionMemberInfo;
 import org.zkaleejoo.protection.ProtectionRegionManager.ProtectionMenuContext;
 import org.zkaleejoo.protection.ProtectionRegionManager.MemberChangeResult;
 import org.zkaleejoo.protection.ProtectionRegionManager.ProtectionAdminState;
 import org.zkaleejoo.protection.ProtectionRegionManager.RemoveResult;
 import org.zkaleejoo.utils.ItemBuilder;
-import org.zkaleejoo.utils.ArgosProtectHolder;
+import org.zkaleejoo.utils.MaxProtectHolder;
 import org.zkaleejoo.utils.MessageUtils;
 import org.zkaleejoo.protection.storage.ProtectionStorage.ProtectionEventLog;
 
@@ -46,12 +46,12 @@ public class ProtectionMenuManager {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy")
             .withZone(ZoneId.systemDefault());
 
-    private final ArgosProtect plugin;
+    private final MaxProtect plugin;
     private final NamespacedKey menuRegionKey;
     private final NamespacedKey menuMemberKey;
     private final Map<UUID, Long> homeCooldowns = new HashMap<>();
 
-    public ProtectionMenuManager(ArgosProtect plugin) {
+    public ProtectionMenuManager(MaxProtect plugin) {
         this.plugin = plugin;
         this.menuRegionKey = new NamespacedKey(plugin, "menu_region");
         this.menuMemberKey = new NamespacedKey(plugin, "menu_member");
@@ -66,7 +66,7 @@ public class ProtectionMenuManager {
             return;
         }
 
-        Inventory inv = Bukkit.createInventory(new ArgosProtectHolder("PROTECTION_MENU"),
+        Inventory inv = Bukkit.createInventory(new MaxProtectHolder("PROTECTION_MENU"),
                 plugin.getConfigManager().getProtectionMenuSize(),
                 MessageUtils.getColoredMessage(plugin.getConfigManager().getProtectionMenuTitle()));
 
@@ -95,7 +95,7 @@ public class ProtectionMenuManager {
             return;
         }
 
-        Inventory inv = Bukkit.createInventory(new ArgosProtectHolder("INFO_MENU"),
+        Inventory inv = Bukkit.createInventory(new MaxProtectHolder("INFO_MENU"),
                 plugin.getConfigManager().getProtectionInfoMenuSize(),
                 MessageUtils.getColoredMessage(applyPlaceholders(plugin.getConfigManager().getProtectionInfoMenuTitle(), context, player)));
 
@@ -169,7 +169,7 @@ public class ProtectionMenuManager {
     }
 
     public void openRemoveConfirmMenu(Player player, ProtectionMenuContext context) {
-        Inventory inv = Bukkit.createInventory(new ArgosProtectHolder(REMOVE_CONFIRM_MENU_ID, context.regionId()),
+        Inventory inv = Bukkit.createInventory(new MaxProtectHolder(REMOVE_CONFIRM_MENU_ID, context.regionId()),
                 plugin.getConfigManager().getProtectionRemoveConfirmMenuSize(),
                 MessageUtils.getColoredMessage(applyPlaceholders(
                         plugin.getConfigManager().getProtectionRemoveConfirmMenuTitle(), context, player)));
@@ -182,7 +182,7 @@ public class ProtectionMenuManager {
         play(player, Sound.UI_BUTTON_CLICK);
     }
 
-    public void handleRemoveConfirmClick(Player player, int slot, ArgosProtectHolder holder) {
+    public void handleRemoveConfirmClick(Player player, int slot, MaxProtectHolder holder) {
         ProtectionMenuContext context = plugin.getProtectionRegionManager()
                 .findAccessibleProtection(player, holder.getContextId());
         if (context == null) {
@@ -267,7 +267,7 @@ public class ProtectionMenuManager {
         List<Integer> contentSlots = plugin.getConfigManager().getProtectionHomeMenuContentSlots();
         int maxPage = maxPage(protections.size(), contentSlots.size());
         int safePage = Math.max(0, Math.min(page, maxPage));
-        Inventory inv = Bukkit.createInventory(new ArgosProtectHolder(HOME_MENU_ID, String.valueOf(safePage)),
+        Inventory inv = Bukkit.createInventory(new MaxProtectHolder(HOME_MENU_ID, String.valueOf(safePage)),
                 plugin.getConfigManager().getProtectionHomeMenuSize(),
                 MessageUtils.getColoredMessage(plugin.getConfigManager().getProtectionHomeMenuTitle()));
 
@@ -287,7 +287,7 @@ public class ProtectionMenuManager {
         play(player, Sound.UI_BUTTON_CLICK);
     }
 
-    public void handleHomeMenuClick(Player player, int slot, ItemStack clicked, ArgosProtectHolder holder) {
+    public void handleHomeMenuClick(Player player, int slot, ItemStack clicked, MaxProtectHolder holder) {
         int page = parsePage(holder.getContextId());
         if (slot == plugin.getConfigManager().getProtectionHomeMenuPreviousItem().slot()) {
             openHomeMenu(player, page - 1);
@@ -354,7 +354,7 @@ public class ProtectionMenuManager {
         List<Integer> contentSlots = plugin.getConfigManager().getAdminPlacedMenuContentSlots();
         int maxPage = maxPage(protections.size(), contentSlots.size());
         int safePage = Math.max(0, Math.min(page, maxPage));
-        Inventory inv = Bukkit.createInventory(new ArgosProtectHolder(ADMIN_PLACED_MENU_ID, String.valueOf(safePage)),
+        Inventory inv = Bukkit.createInventory(new MaxProtectHolder(ADMIN_PLACED_MENU_ID, String.valueOf(safePage)),
                 plugin.getConfigManager().getAdminPlacedMenuSize(),
                 MessageUtils.getColoredMessage(applyAdminPlacedPlaceholders(
                         plugin.getConfigManager().getAdminPlacedMenuTitle(), safePage, maxPage, protections.size())));
@@ -377,7 +377,7 @@ public class ProtectionMenuManager {
         play(player, Sound.UI_BUTTON_CLICK);
     }
 
-    public void handleAdminPlacedMenuClick(Player player, int slot, ItemStack clicked, ArgosProtectHolder holder) {
+    public void handleAdminPlacedMenuClick(Player player, int slot, ItemStack clicked, MaxProtectHolder holder) {
         int page = parsePage(holder.getContextId());
         if (slot == plugin.getConfigManager().getAdminPlacedMenuPreviousItem().slot()) {
             openAdminPlacedMenu(player, page - 1);
@@ -450,7 +450,7 @@ public class ProtectionMenuManager {
         List<Integer> contentSlots = plugin.getConfigManager().getProtectionMembersMenuContentSlots();
         int maxPage = maxPage(members.size(), contentSlots.size());
         int safePage = Math.max(0, Math.min(page, maxPage));
-        Inventory inv = Bukkit.createInventory(new ArgosProtectHolder(MEMBERS_MENU_ID,
+        Inventory inv = Bukkit.createInventory(new MaxProtectHolder(MEMBERS_MENU_ID,
                 context.regionId() + "|" + safePage), plugin.getConfigManager().getProtectionMembersMenuSize(),
                 MessageUtils.getColoredMessage(applyPlaceholders(plugin.getConfigManager().getProtectionMembersMenuTitle(),
                         context, player)));
@@ -472,7 +472,7 @@ public class ProtectionMenuManager {
     }
 
     public void handleMembersMenuClick(Player player, int slot, ItemStack clicked, ClickType click,
-            ArgosProtectHolder holder) {
+            MaxProtectHolder holder) {
         String[] contextParts = holder.getContextId().split("\\|", 2);
         if (contextParts.length != 2) {
             play(player, Sound.BLOCK_NOTE_BLOCK_BASS);
@@ -607,7 +607,7 @@ public class ProtectionMenuManager {
                 .orElse(0);
         int safePage = Math.max(0, Math.min(page, maxPage));
 
-        Inventory inv = Bukkit.createInventory(new ArgosProtectHolder(SETTINGS_MENU_ID, String.valueOf(safePage)),
+        Inventory inv = Bukkit.createInventory(new MaxProtectHolder(SETTINGS_MENU_ID, String.valueOf(safePage)),
                 plugin.getConfigManager().getProtectionSettingsMenuSize(),
                 MessageUtils.getColoredMessage(plugin.getConfigManager().getProtectionSettingsMenuTitle()
                         .replace("%page%", String.valueOf(safePage + 1))
@@ -656,7 +656,7 @@ public class ProtectionMenuManager {
         }
     }
 
-    public void handleSettingsMenuClick(Player player, int slot, ArgosProtectHolder holder) {
+    public void handleSettingsMenuClick(Player player, int slot, MaxProtectHolder holder) {
         int page = parsePage(holder.getContextId());
         
         if (slot == plugin.getConfigManager().getProtectionSettingsMenuPreviousItem().slot()) {
@@ -741,7 +741,7 @@ public class ProtectionMenuManager {
         ProtectionMemberRank playerRank = plugin.getProtectionRegionManager().rankFor(player, context);
         String rank = switch (playerRank == null ? ProtectionMemberRank.ADMIN : playerRank) {
             case OWNER -> plugin.getConfigManager().getProtectionHomeRoleOwner();
-            case ADMIN -> playerRank == null && player.hasPermission(ArgosProtectPermissions.ADMIN)
+            case ADMIN -> playerRank == null && player.hasPermission(MaxProtectPermissions.ADMIN)
                     ? plugin.getConfigManager().getProtectionHomeRoleAdmin()
                     : plugin.getConfigManager().getProtectionMembersRoleAdmin();
             case MEMBER -> plugin.getConfigManager().getProtectionHomeRoleMember();
@@ -1071,7 +1071,7 @@ public class ProtectionMenuManager {
         List<Integer> contentSlots = plugin.getConfigManager().getProtectionLogsMenuContentSlots();
         int maxPage = maxPage(events.size(), contentSlots.size());
         int safePage = Math.max(0, Math.min(page, maxPage));
-        Inventory inv = Bukkit.createInventory(new ArgosProtectHolder(LOGS_MENU_ID,
+        Inventory inv = Bukkit.createInventory(new MaxProtectHolder(LOGS_MENU_ID,
                 context.regionId() + "|" + safePage), plugin.getConfigManager().getProtectionLogsMenuSize(),
                 MessageUtils.getColoredMessage(applyPlaceholders(plugin.getConfigManager().getProtectionLogsMenuTitle(),
                         context, player)));
@@ -1093,7 +1093,7 @@ public class ProtectionMenuManager {
     }
 
     public void handleLogsMenuClick(Player player, int slot, ItemStack clicked, ClickType click,
-            ArgosProtectHolder holder) {
+            MaxProtectHolder holder) {
         String[] contextParts = holder.getContextId().split("\\|", 2);
         if (contextParts.length != 2) {
             play(player, Sound.BLOCK_NOTE_BLOCK_BASS);

@@ -9,7 +9,7 @@
 
 general:
   language: "en"
-  prefix: "&#27F554&lArgosProtect &8» "
+  prefix: "&#27F554&lMaxProtect &8» "
   update-check: true
   bstats: true
 
@@ -105,14 +105,14 @@ limits:
   # Add as many groups as you want. The player will use the matching group with the highest priority.
   groups:
     vip:
-      permission: "argosprotect.limits.vip"
+      permission: "maxprotect.limits.vip"
       priority: 10
       max-protections: 10
       max-radius: 50
       min-price: 0
       max-price: 250000
     mvp:
-      permission: "argosprotect.limits.mvp"
+      permission: "maxprotect.limits.mvp"
       priority: 20
       max-protections: 20
       max-radius: 75
