@@ -19,7 +19,7 @@ public final class MaxProtect extends JavaPlugin {
 
     public static final String UPDATE_DOWNLOAD_URL = "https://modrinth.com/plugin/maxprotect";
     private static final long UPDATE_CHECK_INTERVAL_TICKS = 20L * 60L * 60L * 5L;
-    private static final int BSTATS_PLUGIN_ID = 33606;
+    private static final int BSTATS_PLUGIN_ID = 33949;
 
     private MainConfigManager mainConfigManager;
     private ProtectionCreationManager protectionCreationManager;
@@ -56,22 +56,22 @@ public final class MaxProtect extends JavaPlugin {
                 MessageUtils.getColoredMessage("&a&lMaxProtect &8» &fThe plugin was successfully activated"));
         Bukkit.getConsoleSender().sendMessage(
                 MessageUtils.getColoredMessage(
-                        "&a&lMaxProtect &8» &a   _____                            __________                __                 __   "));
+                        "&a&lMaxProtect &8» &a   _____                __________                __                 __   "));
         Bukkit.getConsoleSender().sendMessage(
                 MessageUtils.getColoredMessage(
-                        "&a&lMaxProtect &8» &a  /  _  \\_______  ____   ____  _____\\______   \\_______  _____/  |_  ____   _____/  |_ "));
+                        "&a&lMaxProtect &8» &a  /     \ _____  ___  __\______   \_______  _____/  |_  ____   _____/  |_ "));
         Bukkit.getConsoleSender().sendMessage(
                 MessageUtils.getColoredMessage(
-                        "&a&lMaxProtect &8» &a /  /_\\  \\_  __ \\/ ___\\ /  _ \\/  ___/|     ___/\\_  __ \\/  _ \\   __\\/ __ \\_/ ___\\   __\\"));
+                        "&a&lMaxProtect &8» &a /  \ /  \\__  \ \  \/  /|     ___/\_  __ \/  _ \   __\/ __ \_/ ___\   __\"));
         Bukkit.getConsoleSender().sendMessage(
                 MessageUtils.getColoredMessage(
-                        "&a&lMaxProtect &8» &a/    |    \\  | \\/ /_/  >  <_> )___ \\ |    |     |  | \\(  <_> )  | \\  ___/\\  \\___|  |  "));
+                        "&a&lMaxProtect &8» &a/    Y    \/ __ \_>    < |    |     |  | \(  <_> )  | \  ___/\  \___|  |  "));
         Bukkit.getConsoleSender().sendMessage(
                 MessageUtils.getColoredMessage(
-                        "&a&lMaxProtect &8» &a\\____|__  /__|  \\___  / \\____/____  >|____|     |__|   \\____/|__|  \\___  >\\___  >__|  "));
+                        "&a&lMaxProtect &8» &a\____|__  (____  /__/\_ \|____|     |__|   \____/|__|  \___  >\___  >__|  "));
         Bukkit.getConsoleSender().sendMessage(
                 MessageUtils.getColoredMessage(
-                        "&a&lMaxProtect &8» &a        \\/     /_____/            \\/                                   \\/     \\/      "));
+                        "&a&lMaxProtect &8» &a        \/     \/      \/                                  \/     \/      "));
 
         startUpdateChecks();
     }
