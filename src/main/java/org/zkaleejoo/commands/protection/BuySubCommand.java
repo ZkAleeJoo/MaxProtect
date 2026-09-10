@@ -80,8 +80,9 @@ public class BuySubCommand implements PluginSubCommand {
 
             EconomyResponse response = context.plugin().getEconomy().withdrawPlayer(player, price);
             if (!response.transactionSuccess()) {
-                context.sendError(player, context.replace(context.plugin().getConfigManager().getMsgProtectionBuyError(),
-                        "%error%", response.errorMessage));
+                context.sendError(player,
+                        context.replace(context.plugin().getConfigManager().getMsgProtectionBuyError(),
+                                "%error%", response.errorMessage));
                 return;
             }
         }
