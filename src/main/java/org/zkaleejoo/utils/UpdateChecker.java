@@ -12,7 +12,8 @@ import java.util.function.Consumer;
 
 public class UpdateChecker {
 
-    private static final String GITHUB_VERSION_URL = "https://gist.githubusercontent.com/ZkAleeJoo/16e20017d7c91f93789ee5c831635758/raw/MaxProtect.txt";
+    private static final String GITHUB_VERSION_URL = "https://gist.githubusercontent.com/ZkAleeJoo/16e20017d7c91f93789ee5c831635758/raw/MaxProtect";
+
     private final MaxProtect plugin;
 
     public UpdateChecker(MaxProtect plugin) {
