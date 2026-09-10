@@ -37,7 +37,8 @@ public class AliasSubCommand implements PluginSubCommand {
             return;
         }
 
-        ProtectionMenuContext protection = context.plugin().getProtectionRegionManager().findManageableProtectionAt(player);
+        ProtectionMenuContext protection = context.plugin().getProtectionRegionManager()
+                .findManageableProtectionAt(player);
         if (protection == null || !context.plugin().getProtectionRegionManager().canManageMembers(player, protection)) {
             context.send(player, context.plugin().getConfigManager().getMsgProtectionMenuNotInOwnProtection());
             return;
@@ -55,6 +56,7 @@ public class AliasSubCommand implements PluginSubCommand {
             context.send(player, context.plugin().getConfigManager().getMsgProtectionRegionSaveError());
             return;
         }
-        context.send(player, context.plugin().getConfigManager().getMsgProtectionAliasUpdated().replace("%alias%", newAlias));
+        context.send(player,
+                context.plugin().getConfigManager().getMsgProtectionAliasUpdated().replace("%alias%", newAlias));
     }
 }
