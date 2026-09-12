@@ -119,10 +119,7 @@ public final class MaxProtect extends JavaPlugin {
 
                 Bukkit.getConsoleSender()
                         .sendMessage(MessageUtils
-                                .getColoredMessage("&a&lMaxProtect &8» &f&lNEW VERSION " + version));
-                Bukkit.getConsoleSender().sendMessage(
-                        MessageUtils.getColoredMessage(
-                                "&a&lMaxProtect &8» &fDownload it now at the following link: &7https://modrinth.com/plugin/maxprotect"));
+                                .getColoredMessage("&a&lMaxProtect &8» &f&lNEW VERSION: &7" + UPDATE_DOWNLOAD_URL));
             }
         });
     }

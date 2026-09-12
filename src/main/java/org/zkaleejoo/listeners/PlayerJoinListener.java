@@ -1,13 +1,17 @@
 package org.zkaleejoo.listeners;
 
-import org.zkaleejoo.MaxProtect;
-import org.zkaleejoo.utils.MessageUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.zkaleejoo.MaxProtect;
+import org.zkaleejoo.config.MainConfigManager;
+import org.zkaleejoo.utils.MessageUtils;
+import org.zkaleejoo.utils.UpdateNotificationFormatter;
 
 public class PlayerJoinListener implements Listener {
+
+    private static final String UPDATE_NOTIFY_PERMISSION = "maxprotect.admin";
 
     private final MaxProtect plugin;
 
@@ -16,18 +20,24 @@ public class PlayerJoinListener implements Listener {
     }
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
+    public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (player.hasPermission("maxprotect.admin")) {
-            String latest = plugin.getLatestVersion();
-            if (latest != null && !plugin.getPluginMeta().getVersion().equalsIgnoreCase(latest)) {
-                player.sendMessage(MessageUtils.getColoredMessage(plugin.getConfigManager().getPrefix()
-                        + plugin.getConfigManager().getMsgUpdateAvailable().replace("{version}", latest)));
-                player.sendMessage(MessageUtils.getColoredMessage(plugin.getConfigManager().getMsgUpdateCurrent()
-                        .replace("{version}", plugin.getPluginMeta().getVersion())));
-                player.sendMessage(MessageUtils.getColoredMessage(plugin.getConfigManager().getMsgUpdateDownload()));
-                player.sendMessage(MessageUtils.getColoredMessage("&f" + MaxProtect.UPDATE_DOWNLOAD_URL));
-            }
+        if (!player.hasPermission(UPDATE_NOTIFY_PERMISSION)) {
+            return;
+        }
+
+        MainConfigManager config = plugin.getConfigManager();
+        if (!config.isUpdateCheckEnabled()) {
+            return;
+        }
+
+        for (String line : UpdateNotificationFormatter.format(
+                config.getPrefix(),
+                config.getMsgUpdateAvailable(),
+                plugin.getPluginMeta().getVersion(),
+                plugin.getLatestVersion(),
+                MaxProtect.UPDATE_DOWNLOAD_URL)) {
+            player.sendMessage(MessageUtils.getColoredMessage(line));
         }
     }
 }

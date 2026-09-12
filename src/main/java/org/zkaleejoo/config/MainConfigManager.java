@@ -132,8 +132,6 @@ public class MainConfigManager {
 
     // MESSAGES
     private String msgUpdateAvailable;
-    private String msgUpdateCurrent;
-    private String msgUpdateDownload;
     private String msgNoPermission;
     private String msgPluginReload;
     private String msgUsageCommand;
@@ -547,9 +545,7 @@ public class MainConfigManager {
         registerLimitPermissions();
 
         // MESSAGES
-        msgUpdateAvailable = lang.getString("messages.update-available", "&f&lNEW VERSION: &7{version}");
-        msgUpdateCurrent = lang.getString("messages.update-current", "&7Your current version: &c{version}");
-        msgUpdateDownload = lang.getString("messages.update-download", "&eDownload it to get improvements and fixes.");
+        msgUpdateAvailable = lang.getString("messages.update-available", "&f&lNEW VERSION: &7{link}");
         msgNoPermission = lang.getString("messages.commands.no-permission", "&cYou do not have permission.");
         msgPluginReload = lang.getString("messages.commands.plugin-reload", "&aConfiguration successfully reloaded.");
         msgUsageCommand = lang.getString("messages.commands.usage",
@@ -1362,14 +1358,6 @@ public class MainConfigManager {
 
     public String getMsgUpdateAvailable() {
         return msgUpdateAvailable;
-    }
-
-    public String getMsgUpdateCurrent() {
-        return msgUpdateCurrent;
-    }
-
-    public String getMsgUpdateDownload() {
-        return msgUpdateDownload;
     }
 
     public String getMsgNoPermission() {

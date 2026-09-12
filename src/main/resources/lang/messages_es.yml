@@ -6,9 +6,7 @@
 #        \/     \/      \/                                  \/     \/      
 # MaxProtect - Mensajes ES
 messages:
-  update-available: "&f&lNUEVA VERSIÓN: &7{version}"
-  update-current: "&7Tu versión actual: &c{version}"
-  update-download: "&eDescárgala para obtener mejoras y correcciones."
+  update-available: "&f&lNUEVA VERSION: &7{link}"
   commands:
     no-permission: "&#FF4D4D&l✖ &cNo tienes permiso para usar este comando."
     plugin-reload: "&#7CFF6B&l✔ &#B8FFB0La configuración y los mensajes se recargaron correctamente."
