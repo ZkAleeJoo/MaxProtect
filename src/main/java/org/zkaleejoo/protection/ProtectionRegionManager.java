@@ -1,5 +1,7 @@
 package org.zkaleejoo.protection;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.WorldGuard;
@@ -26,6 +28,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -44,7 +47,6 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -72,6 +74,11 @@ import org.zkaleejoo.utils.MessageUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -107,7 +114,10 @@ public class ProtectionRegionManager implements Listener {
     private final Map<UUID, ProtectionFlightSession> protectionFlightSessions = new HashMap<>();
     private final Map<UUID, Long> previewFallProtectionUntil = new HashMap<>();
     private final Set<UUID> previewTeleports = new HashSet<>();
-    private final Map<String, Long> intrusionAlertCooldowns = new HashMap<>();
+    private final Cache<String, Boolean> intrusionAlertCooldowns = Caffeine.newBuilder()
+            .expireAfterWrite(Duration.ofSeconds(10)).build();
+    private final Cache<String, CachedDefinition> definitions = Caffeine.newBuilder()
+            .maximumSize(256).expireAfterAccess(Duration.ofMinutes(10)).build();
     private final List<PlacedProtection> placedProtections = new ArrayList<>();
     private final SqliteProtectionStorage storage;
     private final ProtectionCache cache;
@@ -149,14 +159,15 @@ public class ProtectionRegionManager implements Listener {
         cinematicPreviewCooldowns.clear();
         previewFallProtectionUntil.clear();
         previewTeleports.clear();
-        intrusionAlertCooldowns.clear();
+        intrusionAlertCooldowns.invalidateAll();
+        definitions.invalidateAll();
         cache.invalidateAll();
         storage.close();
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (event.getHand() == EquipmentSlot.OFF_HAND) {
+        if (!event.canBuild()) {
             return;
         }
 
@@ -172,6 +183,10 @@ public class ProtectionRegionManager implements Listener {
             return;
         }
 
+        placeProtection(event, player, protectionId);
+    }
+
+    private synchronized void placeProtection(BlockPlaceEvent event, Player player, String protectionId) {
         ProtectionDefinition definition = loadProtection(protectionId);
         if (definition == null) {
             event.setCancelled(true);
@@ -316,7 +331,9 @@ public class ProtectionRegionManager implements Listener {
             }
         }
 
-        validateProtectionFlight(player, event.getTo(), true);
+        if (hasActiveProtectionFlight) {
+            validateProtectionFlight(player, current, true);
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -370,8 +387,8 @@ public class ProtectionRegionManager implements Listener {
         if (isCinematicPreviewing(player) && !previewTeleports.contains(player.getUniqueId())) {
             endCinematicPreview(player.getUniqueId(), false);
         }
-        if (event.getTo() != null) {
-            validateProtectionFlight(player, event.getTo(), true);
+        if (event.getTo() != null && protectionFlightSessions.containsKey(player.getUniqueId())) {
+            validateProtectionFlight(player, findProtectionAt(event.getTo()), true);
         }
     }
 
@@ -384,6 +401,12 @@ public class ProtectionRegionManager implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         UUID playerId = event.getPlayer().getUniqueId();
+        currentRegionByPlayer.remove(playerId);
+        previewCooldowns.remove(playerId);
+        TaskWrapper viewTask = viewTasks.remove(playerId);
+        if (viewTask != null) {
+            viewTask.cancel();
+        }
         endCinematicPreview(playerId, false);
         disableProtectionFlight(event.getPlayer(), false);
         previewFallProtectionUntil.remove(playerId);
@@ -413,7 +436,7 @@ public class ProtectionRegionManager implements Listener {
         }
 
         String regionId = buildRegionId(player, block, definition);
-        if (regionManager.hasRegion(regionId)) {
+        if (regionManager.hasRegion(regionId) || findProtection(regionId) != null) {
             return CreationResult.fail(plugin.getConfigManager().getMsgProtectionRegionExists());
         }
 
@@ -532,7 +555,6 @@ public class ProtectionRegionManager implements Listener {
         ProtectionRentSettings rentSettings = plugin.getConfigManager().getProtectionRentSettings();
         long rentPaidUntil = rentSettings.enabled() ? System.currentTimeMillis() + rentSettings.periodMillis() : 0L;
         PlacedProtection placed = PlacedProtection.from(player, block, definition, regionId, rentPaidUntil, false);
-        placedProtections.removeIf(existing -> existing.regionId().equalsIgnoreCase(regionId));
         placedProtections.add(placed);
         placedProtections.sort(Comparator.comparing(PlacedProtection::regionId));
         savePlacedProtections();
@@ -571,7 +593,7 @@ public class ProtectionRegionManager implements Listener {
         });
     }
 
-    private boolean savePlacedProtections() {
+    private synchronized boolean savePlacedProtections() {
         try {
             List<ProtectionStorage.StoredProtection> snapshot = placedProtections.stream()
                     .map(this::toStoredProtection)
@@ -862,10 +884,33 @@ public class ProtectionRegionManager implements Listener {
         }
         String id = normalizedId.get();
         File protectionFile = new File(new File(plugin.getDataFolder(), "protections"), id + ".yml");
-        if (!protectionFile.isFile()) {
+        try {
+            BasicFileAttributes attributes = Files.readAttributes(protectionFile.toPath(), BasicFileAttributes.class);
+            if (!attributes.isRegularFile()) {
+                definitions.invalidate(id);
+                return null;
+            }
+            CachedDefinition cached = definitions.getIfPresent(id);
+            if (cached != null && cached.modified().equals(attributes.lastModifiedTime()) && cached.size() == attributes.size()) {
+                return cached.definition();
+            }
+            ProtectionDefinition definition = readDefinition(id, protectionFile);
+            definitions.put(id, new CachedDefinition(attributes.lastModifiedTime(), attributes.size(), definition));
+            return definition;
+        } catch (NoSuchFileException exception) {
+            definitions.invalidate(id);
+            return null;
+        } catch (IOException exception) {
+            plugin.getLogger().warning("Could not read protection '" + id + "': " + exception.getMessage());
             return null;
         }
+    }
 
+    public void invalidateDefinitions() {
+        definitions.invalidateAll();
+    }
+
+    private ProtectionDefinition readDefinition(String id, File protectionFile) {
         YamlConfiguration yaml = YamlConfiguration.loadConfiguration(protectionFile);
         Integer radius = loadRadius(yaml, id);
         if (radius == null) {
@@ -1183,6 +1228,9 @@ public class ProtectionRegionManager implements Listener {
         }
 
         ProtectionFlagLevel level = getProtectionFlagLevel(placed, definition);
+        if (level != ProtectionFlagLevel.MEMBERS) {
+            return level == ProtectionFlagLevel.EVERYONE;
+        }
         ProtectionMemberRank rank = rankFor(player, placed).orElse(null);
         return level.allows(rank == ProtectionMemberRank.OWNER,
                 rank != null && rank.canUseMemberLevelFlags());
@@ -1220,13 +1268,12 @@ public class ProtectionRegionManager implements Listener {
         return new ProtectionFlightResult(ProtectionFlightStatus.ENABLED, toContext(placed));
     }
 
-    private void validateProtectionFlight(Player player, Location location, boolean notify) {
+    private void validateProtectionFlight(Player player, PlacedProtection placed, boolean notify) {
         ProtectionFlightSession session = protectionFlightSessions.get(player.getUniqueId());
         if (session == null) {
             return;
         }
 
-        PlacedProtection placed = findProtectionAt(location);
         if (placed != null && placed.regionId().equalsIgnoreCase(session.regionId()) && canAccess(player, placed)) {
             return;
         }
@@ -1282,12 +1329,9 @@ public class ProtectionRegionManager implements Listener {
         }
 
         String key = placed.regionId() + ":" + intruder.getUniqueId() + ":" + action.toLowerCase(Locale.ROOT);
-        long now = System.currentTimeMillis();
-        long nextAlert = intrusionAlertCooldowns.getOrDefault(key, 0L);
-        if (nextAlert > now) {
+        if (intrusionAlertCooldowns.asMap().putIfAbsent(key, Boolean.TRUE) != null) {
             return;
         }
-        intrusionAlertCooldowns.put(key, now + 10_000L);
         owner.sendMessage(MessageUtils.getColoredMessage(plugin.getConfigManager().getPrefix()
                 + plugin.getConfigManager().getMsgProtectionIntrusionAlert()
                         .replace("%player%", intruder.getName())
@@ -2163,14 +2207,16 @@ public class ProtectionRegionManager implements Listener {
         }
 
         long now = System.currentTimeMillis();
-        long nextUse = previewCooldowns.getOrDefault(player.getUniqueId(), 0L);
         CinematicPreview cinematic = plugin.getConfigManager().getProtectionFeedbackConfig().cinematicPreview();
-        if (!cinematic.enabled() && !force && nextUse > now) {
-            return;
-        }
-
-        ProtectionDefinition definition = loadProtection(protectionId);
-        if (definition == null) {
+        VisualEffect effect = plugin.getConfigManager().getProtectionFeedbackConfig().viewEffect();
+        UUID playerId = player.getUniqueId();
+        if (cinematic.enabled()) {
+            if (previewSessions.containsKey(playerId)
+                    || (cinematic.cooldownSeconds() > 0 && cinematicPreviewCooldowns.getOrDefault(playerId, 0L) > now)
+                    || (!cinematic.useFakeBlocks() && !effect.enabled())) {
+                return;
+            }
+        } else if (!effect.enabled() || (!force && previewCooldowns.getOrDefault(playerId, 0L) > now)) {
             return;
         }
 
@@ -2179,15 +2225,16 @@ public class ProtectionRegionManager implements Listener {
             return;
         }
 
+        ProtectionDefinition definition = loadProtection(protectionId);
+        if (definition == null) {
+            return;
+        }
+
         if (cinematic.enabled()) {
             startCinematicPreview(player, previewCenter, definition.radius(), cinematic);
             return;
         }
 
-        VisualEffect effect = plugin.getConfigManager().getProtectionFeedbackConfig().viewEffect();
-        if (!effect.enabled()) {
-            return;
-        }
         previewCooldowns.put(player.getUniqueId(), now + 1500L);
         drawBorder(player, previewCenter, definition.radius(), effect);
     }
@@ -2206,15 +2253,7 @@ public class ProtectionRegionManager implements Listener {
 
     private void startCinematicPreview(Player player, Location center, int radius, CinematicPreview config) {
         UUID playerId = player.getUniqueId();
-        if (previewSessions.containsKey(playerId)) {
-            return;
-        }
-
         long now = System.currentTimeMillis();
-        long nextUse = cinematicPreviewCooldowns.getOrDefault(playerId, 0L);
-        if (config.cooldownSeconds() > 0 && nextUse > now) {
-            return;
-        }
 
         World world = center.getWorld();
         if (world == null || !player.getWorld().equals(world)) {
@@ -2524,7 +2563,7 @@ public class ProtectionRegionManager implements Listener {
             return new InviteResponseResult(InviteResponseStatus.EXPIRED, null, pending.inviterName());
         }
         PlacedProtection placed = findProtection(pending.regionId());
-        if (placed == null) {
+        if (placed == null || placed.createdAtMillis() > pending.createdAtMillis()) {
             storage.deleteInvite(inviteId);
             cache.invalidateInviteById(inviteId);
             cache.invalidateInvitesByPlayer(pending.invitedUuid());
@@ -3155,6 +3194,9 @@ public class ProtectionRegionManager implements Listener {
         private static CreationResult fail(String message) {
             return new CreationResult(false, "", message);
         }
+    }
+
+    private record CachedDefinition(FileTime modified, long size, ProtectionDefinition definition) {
     }
 
     private record ProtectionDefinition(String id, String displayName, ItemStack blockItem, int radius, int priority,

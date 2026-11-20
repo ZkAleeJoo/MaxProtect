@@ -67,6 +67,8 @@ When you start the plugin for the first time, several key files and folders will
 
 > **Tip:** The plugin offers an in-game command to visually generate protection blocks and their YAMLs automatically without having to manually touch the `protections/` folder: `/mp create`.
 
+Each placed stone needs a region ID unique across all worlds. Include `%world%` in `worldguard.region-id-format` if players should be able to place the same stone type at matching coordinates in different worlds.
+
 ---
 
 ## 4. Commands List
@@ -143,6 +145,8 @@ Notable flags include:
 *   **Survival:** Keep Inventory, Keep Experience, Fall Damage, Potion Splash, Hunger Drain.
 
 These flags apply states such as *Nobody*, *Members+* or *Everyone* based on the chosen configuration in the interface.
+
+Opening a double chest requires storage access to both halves, including when the chest crosses a protection boundary.
 
 ---
 

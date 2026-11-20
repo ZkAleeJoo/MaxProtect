@@ -28,9 +28,11 @@ import org.zkaleejoo.permissions.MaxProtectPermissions;
 import org.zkaleejoo.protection.ProtectionFlagDefinition;
 import org.zkaleejoo.utils.MessageUtils;
 
-import java.util.HashMap;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+
+import java.time.Duration;
 import java.util.Locale;
-import java.util.Map;
 import java.util.UUID;
 
 public class ProtectionFlagListener implements Listener {
@@ -38,7 +40,8 @@ public class ProtectionFlagListener implements Listener {
     private static final long DENIED_MESSAGE_COOLDOWN_MS = 1200L;
 
     private final MaxProtect plugin;
-    private final Map<UUID, Long> deniedMessageCooldowns = new HashMap<>();
+    private final Cache<UUID, Boolean> deniedMessageCooldowns = Caffeine.newBuilder()
+            .expireAfterWrite(Duration.ofMillis(DENIED_MESSAGE_COOLDOWN_MS)).build();
 
     public ProtectionFlagListener(MaxProtect plugin) {
         this.plugin = plugin;
@@ -82,15 +85,20 @@ public class ProtectionFlagListener implements Listener {
             return;
         }
 
-        Location location = holderLocation(event.getInventory().getHolder());
-        if (location == null) {
-            return;
+        InventoryHolder holder = event.getInventory().getHolder(false);
+        Location denied;
+        if (holder instanceof DoubleChest chest) {
+            denied = deniedStorageLocation(player, chest.getLeftSide(false));
+            if (denied == null) {
+                denied = deniedStorageLocation(player, chest.getRightSide(false));
+            }
+        } else {
+            denied = deniedStorageLocation(player, holder);
         }
-
-        if (!plugin.getProtectionRegionManager().canUseFlag(player, location, ProtectionFlagDefinition.STORAGE)) {
+        if (denied != null) {
             event.setCancelled(true);
             sendDenied(player, ProtectionFlagDefinition.STORAGE);
-            plugin.getProtectionRegionManager().notifyIntrusionAttempt(player, location,
+            plugin.getProtectionRegionManager().notifyIntrusionAttempt(player, denied,
                     actionName(ProtectionFlagDefinition.STORAGE));
         }
     }
@@ -221,12 +229,12 @@ public class ProtectionFlagListener implements Listener {
         plugin.getProtectionRegionManager().notifyIntrusionAttempt(player, block.getLocation(), actionName(definition));
     }
 
-    private Location holderLocation(InventoryHolder holder) {
+    private Location deniedStorageLocation(Player player, InventoryHolder holder) {
         if (holder instanceof BlockState blockState) {
-            return blockState.getLocation();
-        }
-        if (holder instanceof DoubleChest doubleChest) {
-            return doubleChest.getLocation();
+            Location location = blockState.getLocation();
+            if (!plugin.getProtectionRegionManager().canUseFlag(player, location, ProtectionFlagDefinition.STORAGE)) {
+                return location;
+            }
         }
         return null;
     }
@@ -270,13 +278,10 @@ public class ProtectionFlagListener implements Listener {
     }
 
     private void sendDenied(Player player, ProtectionFlagDefinition definition) {
-        long now = System.currentTimeMillis();
-        long lastMessage = deniedMessageCooldowns.getOrDefault(player.getUniqueId(), 0L);
-        if (now - lastMessage < DENIED_MESSAGE_COOLDOWN_MS) {
+        if (deniedMessageCooldowns.asMap().putIfAbsent(player.getUniqueId(), Boolean.TRUE) != null) {
             return;
         }
 
-        deniedMessageCooldowns.put(player.getUniqueId(), now);
         player.sendMessage(MessageUtils.getColoredMessage(plugin.getConfigManager().getPrefix()
                 + plugin.getConfigManager().getMsgProtectionFlagDenied()
                         .replace("%flag%", flagName(definition))));

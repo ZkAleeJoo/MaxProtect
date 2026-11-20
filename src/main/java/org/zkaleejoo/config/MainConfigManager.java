@@ -945,6 +945,9 @@ public class MainConfigManager {
             langFile.reloadConfig();
         }
         loadConfig();
+        if (plugin.getProtectionRegionManager() != null) {
+            plugin.getProtectionRegionManager().invalidateDefinitions();
+        }
     }
 
     public boolean isUpdateCheckEnabled() {

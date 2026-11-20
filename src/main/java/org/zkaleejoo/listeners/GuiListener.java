@@ -10,6 +10,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.zkaleejoo.MaxProtect;
+import org.zkaleejoo.permissions.MaxProtectPermissions;
 import org.zkaleejoo.utils.MaxProtectHolder;
 import org.zkaleejoo.utils.MessageUtils;
 
@@ -24,129 +25,106 @@ public class GuiListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getClickedInventory() == null)
+        if (!(event.getInventory().getHolder(false) instanceof MaxProtectHolder holder)) {
             return;
-        if (event.getInventory().getHolder() == null)
+        }
+        event.setCancelled(true);
+        int slot = event.getRawSlot();
+        if (slot < 0 || slot >= event.getView().getTopInventory().getSize()
+                || !(event.getWhoClicked() instanceof Player player)) {
             return;
+        }
 
-        if (event.getInventory().getHolder() instanceof MaxProtectHolder) {
+        String menuId = holder.getMenuId();
+        if ((menuId.equals("LANG_MENU") || menuId.equals("CREATION_MENU"))
+                && !player.hasPermission(MaxProtectPermissions.ADMIN)) {
+            return;
+        }
+        if (menuId.equals("PROTECTION_ADMIN_PLACED") && !player.hasPermission(MaxProtectPermissions.ADMIN)
+                && !player.hasPermission(MaxProtectPermissions.ADMIN_LIST_PLACED)) {
+            return;
+        }
 
-            event.setCancelled(true);
+        if (menuId.equals("CREATION_MENU")) {
+            plugin.getProtectionCreationManager().handleMenuClick(player, slot);
+            return;
+        }
 
-            MaxProtectHolder holder = (MaxProtectHolder) event.getInventory().getHolder();
-            String menuId = holder.getMenuId();
+        if (menuId.equals("INFO_MENU")) {
+            plugin.getProtectionMenuManager().handleInfoMenuClick(player, slot);
+            return;
+        }
 
-            if (menuId.equals("CREATION_MENU")) {
-                if (!(event.getWhoClicked() instanceof Player player)) {
-                    return;
-                }
-                plugin.getProtectionCreationManager().handleMenuClick(player, event.getSlot());
+        if (menuId.equals("PROTECTION_MENU")) {
+            plugin.getProtectionMenuManager().handleMenuClick(player, slot);
+            return;
+        }
+
+        if (menuId.equals("PROTECTION_SETTINGS_MENU")) {
+            plugin.getProtectionMenuManager().handleSettingsMenuClick(player, slot, holder);
+            return;
+        }
+
+        if (menuId.equals("PROTECTION_HOME_MENU")) {
+            plugin.getProtectionMenuManager().handleHomeMenuClick(player, slot,
+                    event.getCurrentItem(), holder);
+            return;
+        }
+
+        if (menuId.equals("PROTECTION_MEMBERS_MENU")) {
+            plugin.getProtectionMenuManager().handleMembersMenuClick(player, slot,
+                    event.getCurrentItem(), event.getClick(), holder);
+            return;
+        }
+
+        if (menuId.equals("PROTECTION_LOGS_MENU")) {
+            plugin.getProtectionMenuManager().handleLogsMenuClick(player, slot,
+                    event.getCurrentItem(), event.getClick(), holder);
+            return;
+        }
+
+        if (menuId.equals("PROTECTION_REMOVE_CONFIRM")) {
+            plugin.getProtectionMenuManager().handleRemoveConfirmClick(player, slot, holder);
+            return;
+        }
+
+        if (menuId.equals("PROTECTION_ADMIN_PLACED")) {
+            plugin.getProtectionMenuManager().handleAdminPlacedMenuClick(player, slot,
+                    event.getCurrentItem(), holder);
+            return;
+        }
+
+        if (menuId.equals("LANG_MENU")) {
+            ItemStack clicked = event.getCurrentItem();
+            if (clicked == null || clicked.getType().isAir()) {
+                play(player, Sound.BLOCK_NOTE_BLOCK_BASS);
                 return;
             }
 
-            if (menuId.equals("INFO_MENU")) {
-                if (!(event.getWhoClicked() instanceof Player player)) {
-                    return;
-                }
-                plugin.getProtectionMenuManager().handleInfoMenuClick(player, event.getSlot());
+            String languageCode = plugin.getConfigManager().getLanguageMenuItems().stream()
+                    .filter(item -> item.hasSlot(slot))
+                    .filter(item -> !item.decorative())
+                    .map(item -> item.id().toLowerCase())
+                    .findFirst()
+                    .orElse(null);
+            if (languageCode == null) {
+                play(player, Sound.BLOCK_NOTE_BLOCK_BASS);
                 return;
             }
 
-            if (menuId.equals("PROTECTION_MENU")) {
-                if (!(event.getWhoClicked() instanceof Player player)) {
-                    return;
-                }
-                plugin.getProtectionMenuManager().handleMenuClick(player, event.getSlot());
-                return;
+            boolean changed = plugin.getConfigManager().applyLanguageConfig(languageCode);
+            if (changed) {
+                String message = plugin.getConfigManager().getMsgLanguageChanged()
+                        .replace("%language%", plugin.getConfigManager().getLanguageDisplayName(languageCode));
+                player.sendMessage(MessageUtils.getColoredMessage(plugin.getConfigManager().getPrefix() + message));
+                play(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+            } else {
+                String message = plugin.getConfigManager().getMsgLanguageFileMissing()
+                        .replace("%file%", "config_" + languageCode + ".yml");
+                player.sendMessage(MessageUtils.getColoredMessage(plugin.getConfigManager().getPrefix() + message));
+                play(player, Sound.ENTITY_VILLAGER_NO);
             }
-
-            if (menuId.equals("PROTECTION_SETTINGS_MENU")) {
-                if (!(event.getWhoClicked() instanceof Player player)) {
-                    return;
-                }
-                plugin.getProtectionMenuManager().handleSettingsMenuClick(player, event.getSlot(), holder);
-                return;
-            }
-
-            if (menuId.equals("PROTECTION_HOME_MENU")) {
-                if (!(event.getWhoClicked() instanceof Player player)) {
-                    return;
-                }
-                plugin.getProtectionMenuManager().handleHomeMenuClick(player, event.getSlot(),
-                        event.getCurrentItem(), holder);
-                return;
-            }
-
-            if (menuId.equals("PROTECTION_MEMBERS_MENU")) {
-                if (!(event.getWhoClicked() instanceof Player player)) {
-                    return;
-                }
-                plugin.getProtectionMenuManager().handleMembersMenuClick(player, event.getSlot(),
-                        event.getCurrentItem(), event.getClick(), holder);
-                return;
-            }
-
-            if (menuId.equals("PROTECTION_LOGS_MENU")) {
-                if (!(event.getWhoClicked() instanceof Player player)) {
-                    return;
-                }
-                plugin.getProtectionMenuManager().handleLogsMenuClick(player, event.getSlot(),
-                        event.getCurrentItem(), event.getClick(), holder);
-                return;
-            }
-
-            if (menuId.equals("PROTECTION_REMOVE_CONFIRM")) {
-                if (!(event.getWhoClicked() instanceof Player player)) {
-                    return;
-                }
-                plugin.getProtectionMenuManager().handleRemoveConfirmClick(player, event.getSlot(), holder);
-                return;
-            }
-
-            if (menuId.equals("PROTECTION_ADMIN_PLACED")) {
-                if (!(event.getWhoClicked() instanceof Player player)) {
-                    return;
-                }
-                plugin.getProtectionMenuManager().handleAdminPlacedMenuClick(player, event.getSlot(),
-                        event.getCurrentItem(), holder);
-                return;
-            }
-
-            if (menuId.equals("LANG_MENU")) {
-                if (!(event.getWhoClicked() instanceof Player player)) {
-                    return;
-                }
-                ItemStack clicked = event.getCurrentItem();
-                if (clicked == null || clicked.getType().isAir()) {
-                    play(player, Sound.BLOCK_NOTE_BLOCK_BASS);
-                    return;
-                }
-
-                String languageCode = plugin.getConfigManager().getLanguageMenuItems().stream()
-                        .filter(item -> item.hasSlot(event.getSlot()))
-                        .filter(item -> !item.decorative())
-                        .map(item -> item.id().toLowerCase())
-                        .findFirst()
-                        .orElse(null);
-                if (languageCode == null) {
-                    play(player, Sound.BLOCK_NOTE_BLOCK_BASS);
-                    return;
-                }
-
-                boolean changed = plugin.getConfigManager().applyLanguageConfig(languageCode);
-                if (changed) {
-                    String message = plugin.getConfigManager().getMsgLanguageChanged()
-                            .replace("%language%", plugin.getConfigManager().getLanguageDisplayName(languageCode));
-                    player.sendMessage(MessageUtils.getColoredMessage(plugin.getConfigManager().getPrefix() + message));
-                    play(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
-                } else {
-                    String message = plugin.getConfigManager().getMsgLanguageFileMissing()
-                            .replace("%file%", "config_" + languageCode + ".yml");
-                    player.sendMessage(MessageUtils.getColoredMessage(plugin.getConfigManager().getPrefix() + message));
-                    play(player, Sound.ENTITY_VILLAGER_NO);
-                }
-                player.closeInventory();
-            }
+            player.closeInventory();
         }
     }
 

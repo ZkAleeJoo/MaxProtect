@@ -10,6 +10,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.zkaleejoo.MaxProtect;
 import org.zkaleejoo.config.MainConfigManager.MenuItemConfig;
+import org.zkaleejoo.permissions.MaxProtectPermissions;
 import org.zkaleejoo.protection.ProtectionValidation;
 import org.zkaleejoo.utils.ItemBuilder;
 import org.zkaleejoo.utils.MaxProtectHolder;
@@ -17,21 +18,20 @@ import org.zkaleejoo.utils.MessageUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ProtectionCreationManager {
 
     private final MaxProtect plugin;
-    private final Map<UUID, ProtectionDraft> drafts = new HashMap<>();
-    private final Map<UUID, String> pendingInputs = new HashMap<>();
-    private final Set<UUID> menuRefreshes = new HashSet<>();
+    private final Map<UUID, ProtectionDraft> drafts = new ConcurrentHashMap<>();
+    private final Map<UUID, String> pendingInputs = new ConcurrentHashMap<>();
+    private final Set<UUID> menuRefreshes = ConcurrentHashMap.newKeySet();
 
     public ProtectionCreationManager(MaxProtect plugin) {
         this.plugin = plugin;
@@ -110,6 +110,10 @@ public class ProtectionCreationManager {
     public void handleChatInput(Player player, String message) {
         String fieldId = pendingInputs.remove(player.getUniqueId());
         if (fieldId == null) {
+            return;
+        }
+        if (!player.hasPermission(MaxProtectPermissions.ADMIN)) {
+            reset(player);
             return;
         }
 

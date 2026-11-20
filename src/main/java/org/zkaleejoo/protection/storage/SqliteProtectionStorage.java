@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ public final class SqliteProtectionStorage implements ProtectionStorage {
     private final Logger logger;
     private HikariDataSource dataSource;
     private StorageExecutor executor;
+    private Map<String, StoredProtection> committedProtections;
 
     public SqliteProtectionStorage(Path databasePath, Logger logger) {
         this.databasePath = databasePath;
@@ -46,7 +48,7 @@ public final class SqliteProtectionStorage implements ProtectionStorage {
             config.setIdleTimeout(60000);
             config.setMaxLifetime(300000);
             config.setPoolName("MaxProtect-SQLite");
-            config.setConnectionInitSql("PRAGMA foreign_keys = ON; PRAGMA journal_mode = WAL;");
+            config.addDataSourceProperty("foreign_keys", "true");
             config.addDataSourceProperty("journal_mode", "WAL");
             config.addDataSourceProperty("synchronous", "NORMAL");
 
@@ -56,9 +58,11 @@ public final class SqliteProtectionStorage implements ProtectionStorage {
             try (Connection connection = dataSource.getConnection()) {
                 createSchema(connection);
             }
+            committedProtections = null;
 
             logger.info("Database connection pool initialized (HikariCP, pool=3, WAL mode).");
         } catch (Exception exception) {
+            close();
             throw new IllegalStateException("Could not initialize protection database", exception);
         }
     }
@@ -120,7 +124,8 @@ public final class SqliteProtectionStorage implements ProtectionStorage {
 
     @Override
     public CompletableFuture<Boolean> replaceProtectionsAsync(List<StoredProtection> protections) {
-        return executor.supplyAsync(() -> doReplaceProtections(protections));
+        List<StoredProtection> snapshot = List.copyOf(protections);
+        return executor.supplyAsync(() -> doReplaceProtections(snapshot));
     }
 
     @Override
@@ -200,7 +205,7 @@ public final class SqliteProtectionStorage implements ProtectionStorage {
         }
     }
 
-    private List<StoredProtection> doLoadProtections() {
+    private synchronized List<StoredProtection> doLoadProtections() {
         try (Connection connection = dataSource.getConnection()) {
             Map<String, StoredProtectionBuilder> builders = new LinkedHashMap<>();
             try (PreparedStatement statement = connection.prepareStatement("""
@@ -247,26 +252,51 @@ public final class SqliteProtectionStorage implements ProtectionStorage {
 
             loadFlags(connection, builders);
             loadMembers(connection, builders);
-            return builders.values().stream().map(b -> b.build()).toList();
+            List<StoredProtection> loaded = builders.values().stream().map(b -> b.build()).toList();
+            committedProtections = new HashMap<>();
+            for (StoredProtection protection : loaded) {
+                committedProtections.put(protection.regionId(), protection);
+            }
+            return loaded;
         } catch (SQLException exception) {
             throw new IllegalStateException("Could not load protection database", exception);
         }
     }
 
-    private boolean doReplaceProtections(List<StoredProtection> protections) {
+    private synchronized boolean doReplaceProtections(List<StoredProtection> protections) {
+        if (committedProtections == null) {
+            doLoadProtections();
+        }
+        Map<String, StoredProtection> next = new HashMap<>();
+        for (StoredProtection protection : protections) {
+            if (next.putIfAbsent(protection.regionId(), protection) != null) {
+                throw new IllegalStateException("Duplicate region ID in protection snapshot");
+            }
+        }
         try (Connection connection = dataSource.getConnection()) {
             boolean autoCommit = connection.getAutoCommit();
             connection.setAutoCommit(false);
             try {
-                execute(connection, "DELETE FROM protection_flags");
-                execute(connection, "DELETE FROM protection_members");
-                execute(connection, "DELETE FROM protections");
+                // Cascading deletes clear the previous flags and memberships of each changed region.
+                try (PreparedStatement delete = connection.prepareStatement("DELETE FROM protections WHERE region_id = ?")) {
+                    for (StoredProtection previous : committedProtections.values()) {
+                        if (!previous.equals(next.get(previous.regionId()))) {
+                            delete.setString(1, previous.regionId());
+                            delete.addBatch();
+                        }
+                    }
+                    delete.executeBatch();
+                }
                 for (StoredProtection protection : protections) {
+                    if (protection.equals(committedProtections.get(protection.regionId()))) {
+                        continue;
+                    }
                     insertProtection(connection, protection);
                     insertFlags(connection, protection);
                     insertMembers(connection, protection);
                 }
                 connection.commit();
+                committedProtections = next;
                 return true;
             } catch (SQLException exception) {
                 connection.rollback();
@@ -501,6 +531,9 @@ public final class SqliteProtectionStorage implements ProtectionStorage {
                     created_at INTEGER NOT NULL
                 )
                 """);
+        execute(connection, "CREATE INDEX IF NOT EXISTS idx_events_region_id ON protection_events(region_id, id)");
+        execute(connection, "CREATE INDEX IF NOT EXISTS idx_invites_player_id ON member_invites(invited_uuid, id)");
+        execute(connection, "CREATE INDEX IF NOT EXISTS idx_invites_region_player_id ON member_invites(region_id, invited_uuid, id)");
     }
 
     private void insertProtection(Connection connection, StoredProtection protection) throws SQLException {

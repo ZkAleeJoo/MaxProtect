@@ -4,13 +4,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 public final class StorageExecutor {
 
-    private static final int POOL_SIZE = 2;
     private static final long SHUTDOWN_TIMEOUT_SECONDS = 5L;
 
     private final ExecutorService executor;
@@ -18,9 +16,8 @@ public final class StorageExecutor {
 
     public StorageExecutor(Logger logger) {
         this.logger = logger;
-        AtomicInteger counter = new AtomicInteger(1);
-        this.executor = Executors.newFixedThreadPool(POOL_SIZE, runnable -> {
-            Thread thread = new Thread(runnable, "maxprotect-db-" + counter.getAndIncrement());
+        this.executor = Executors.newSingleThreadExecutor(runnable -> {
+            Thread thread = new Thread(runnable, "maxprotect-db");
             thread.setDaemon(true);
             return thread;
         });
@@ -38,12 +35,12 @@ public final class StorageExecutor {
         executor.shutdown();
         try {
             if (!executor.awaitTermination(SHUTDOWN_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
-                logger.warning("Database executor did not terminate in time, forcing shutdown.");
-                executor.shutdownNow();
+                logger.warning("Waiting for queued database operations to finish before closing SQLite.");
             }
         } catch (InterruptedException exception) {
-            executor.shutdownNow();
             Thread.currentThread().interrupt();
+        } finally {
+            executor.close();
         }
     }
 }

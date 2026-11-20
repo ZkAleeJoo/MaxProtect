@@ -59,6 +59,10 @@ public interface ProtectionStorage extends AutoCloseable {
                         boolean customHome, double homeX, double homeY, double homeZ, float homeYaw, float homePitch,
                         Map<String, String> flags, Map<String, StoredMember> members,
                         long rentPaidUntilMillis, boolean rentSuspended) {
+                public StoredProtection {
+                        flags = Map.copyOf(flags);
+                        members = Map.copyOf(members);
+                }
         }
 
         record StoredMember(String uuid, String name, String rank) {
